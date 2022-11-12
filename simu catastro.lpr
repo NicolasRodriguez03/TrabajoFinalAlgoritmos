@@ -41,12 +41,6 @@ end;
 
 ///// Seccion de procedimientos de contribuyentes /////
 
-PROCEDURE ALTA_CONTRIBUYENTE ()
-var 
-begin
-
-end;
-
 PROCEDURE ALTA(r: DATO_CONT; var ARCH_C: ARCH_C);
 var
 begin
