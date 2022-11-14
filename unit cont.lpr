@@ -57,10 +57,10 @@ implementation
     PROCEDURE ALTA(r: DATOS_CONT; var ARCH_C: ARCH_C);
     var
     begin
-        with (r) do
+        with (R) do
         begin
             GUARDAR_DATO (ARCH_C,POS,R);
-            GUARDAR_ARBOL();
+            AGREGAR_ARBOL(R);
         end;
     end;
 
