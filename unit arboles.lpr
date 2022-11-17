@@ -1,5 +1,5 @@
 unit ARBOLES;
-uses contribuyentes;
+uses contribuyente;
 
 Type
 	T_DATO_ARBOL= RECORD			// Registro del nodo de busqueda, almacena el dato clave a buscar, y la posición dentro del archivo
@@ -17,8 +17,6 @@ Type
 interface
     PROCEDURE CREAR_ARBOL (VAR ARBOL: T_PUNT);
     PROCEDURE AGREGAR_ARBOL (VAR ARBOL: T_PUNT, X:T_DATO_ARBOL);
-    PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C, VAR ARBOL:T_PUNT);
-    PROCEDURE RECUP_ARCH_AYN (VAR ARCH_C:ARCHIVO_C, VAR ARBOL:T_PUNT);
 
 implementation
 
@@ -45,42 +43,6 @@ implementation
         end;
     END;
 
-    PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C, VAR ARBOL:T_PUNT);      // ANTES VERIFICAR QUE EXISTA EL ARCHIVO
-    VAR 
-        POS:CARDINAL;
-        AUX:DATOS_CONT;
-        AUX_X:T_DATO_ARBOL;
-    begin
-        POS:=0;
-        WHILE NOT(EOF(ARCH_C)) DO
-        begin
-            SEEK(ARCH_C,POS);
-            READ(ARCH_C,AUX);
-            AUX_X.CLAVE:= AUX.DNI;
-            AUX_X.POS_ARCH:= POS;
-            AGREGAR_ARBOL(ARBOL, AUX_X);
-            POS:= POS+1;
-        end;
-        
-    end;
-
-    PROCEDURE RECUP_ARCH_AYN (VAR ARCH_C:ARCHIVO_C, VAR ARBOL:T_PUNT);      // ANTES VERIFICAR QUE EXISTA EL ARCHIVO
-    VAR 
-        POS:CARDINAL;
-        AUX:DATOS_CONT;
-        AUX_X:T_DATO_ARBOL;
-    begin
-        POS:=0;
-        WHILE NOT(EOF(ARCH_C)) DO
-        begin
-            SEEK(ARCH_C,POS);
-            READ(ARCH_C,AUX);
-            AUX_X.CLAVE:= CONCAT(AUX.APELLIDO, AUX.NOMBRE);
-            AUX_X.POS_ARCH:= POS;
-            AGREGAR_ARBOL(ARBOL, AUX_X);
-            POS:= POS+1;
-        end;
-        
-    end;
+    procedure busqueda_arbol();         //ESTO FALTA
 
 end.
