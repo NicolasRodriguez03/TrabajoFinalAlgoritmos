@@ -20,6 +20,16 @@ interface
 
 implementation
 
+    FUNCTION ARBOL_VACIO (ARBOL:T_PUNT): BOOLEAN;
+    BEGIN
+        ARBOL_VACIO:= (ARBOL = NIL);
+    END;
+
+    FUNCTION ARBOL_LLENO (ARBOL:T_PUNT): BOOLEAN;
+    BEGIN
+        ARBOL_LLENO:= GETHEAPSTATUS.TOTALFREE < SIZEOF (T_NODO);
+    END;
+
     PROCEDURE CREAR_ARBOL (VAR ARBOL: T_PUNT);
     BEGIN
         ARBOL:= NIL;
@@ -43,6 +53,47 @@ implementation
         end;
     END;
 
-    procedure busqueda_arbol();         //ESTO FALTA
+    procedure leer_clave(var x:string; var clave:string);
+    begin
+    Writeln ('Desea buscar por NOMBRE o DNI?')
+    Readln (x);
+    If (x=nombre) or (x=NOMBRE) or (x=Nombre) then
+        begin
+        Writeln ('Ingrese nombre')
+        Readln (CLAVE);
+        end;
+    ELSE
+        begin
+        Writeln ('Ingrese DNI')
+        Readln (CLAVE)
+        end;
+    end;
+
+    procedure buscar_en_arbol(x:string; clave:string; var pos:CARDINAL);
+    begin
+    If (x=nombre) or (x=NOMBRE) or (x=Nombre) then
+        begin
+        busqueda_arbol(arbol_nombre, pos, clave);
+        end;
+    else
+        begin
+        busqueda_arbol(arbol_dni, pos, clave);
+        end;
+    end;
+
+    procedure busqueda_arbol(x: STRING; VAR ARBOL: T_PUNT; var pos: CARDINAL);         //ESTO FALTA
+        begin
+    IF ARBOL=NIL THEN 
+    POS:= -1;
+    ELSE 
+    IF X=ARBOL.INFO.CLAVE THEN 
+        POS:=ARBOL.INFO.POS_ARCH
+    ELSE 
+       IF  X > ARBOL.CLAVE THEN 
+        busqueda_arbol (X,ARBOL.H_D,POS);
+        ELSE 
+        busqueda_arbol (X,ARBOL.H_I,POS);
+end;
+
 
 end.

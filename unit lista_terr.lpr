@@ -1,4 +1,5 @@
 unit lista_terreno;
+    
 
 interface
     PROCEDURE CREARLISTA (VAR L:T_LISTA);
@@ -43,21 +44,21 @@ BEGIN
     L.CAB:=NIL;
 END;
 
-PROCEDURE AGREGAR (VAR L:T_LISTA; X:T_DATO_T);
+PROCEDURE AGREGAR_FECHA(VAR L:T_LISTA; X:T_DATO_T);
 VAR DIR, ANT : T_PUNT;
 BEGIN
     NEW (DIR);
     DIR^.INFO:= X;
-    IF (L.CAB= NIL) OR (L.CAB^.INFO.N_CONT > X.N_CONT) THEN
+    IF (L.CAB= NIL) OR ((L.CAB^.INFO.F_INC + L.CAB^.INFO.ZONA) < (X.F_INC + X.ZONA)) THEN
     BEGIN
         DIR^.SIG:= L.CAB;
-        L. CAB:=DIR;
+        L.CAB:= DIR;
     END
     ELSE
     BEGIN
         ANT:= L.CAB;
         L.ACT:= L.CAB^.SIG;
-        WHILE (L.ACT <> NIL) AND (L.ACT^.INFO.N_CONT < X.N_CONT) DO
+        WHILE (L.ACT <> NIL) AND ((L.ACT^.INFO.F_INC + L.ACT^.INFO.ZONA) < (X.F_INC + X.ZONA)) DO
         BEGIN
             ANT:= L.ACT;
             L.ACT:= L.ACT^.SIG
@@ -67,6 +68,33 @@ BEGIN
     END;
     INC(L.TAM)
 END;
+
+PROCEDURE AGREGAR_ZONA(VAR L:T_LISTA; X:T_DATO_T);
+VAR DIR, ANT : T_PUNT;
+BEGIN
+    NEW (DIR);
+    DIR^.INFO:= X;
+    IF (L.CAB= NIL) OR ((L.CAB^.INFO.ZONA) < (X.ZONA)) THEN
+    BEGIN
+        DIR^.SIG:= L.CAB;
+        L.CAB:= DIR;
+    END
+    ELSE
+    BEGIN
+        ANT:= L.CAB;
+        L.ACT:= L.CAB^.SIG;
+        WHILE (L.ACT <> NIL) AND ((L.ACT^.INFO.ZONA) < (X.ZONA)) DO
+        BEGIN
+            ANT:= L.ACT;
+            L.ACT:= L.ACT^.SIG
+        END;
+        DIR^.SIG:= L.ACT;
+        ANT^.SIG:= DIR;
+    END;
+    INC(L.TAM)
+END;
+
+GE
 
 PROCEDURE SIGUIENTE(VAR L:T_LISTA);
 BEGIN
@@ -124,3 +152,46 @@ PROCEDURE RECUPERAR (L:T_LISTA; VAR E:T);
 BEGIN
     E:= L^.INFO;
 END;
+
+PROCEDURE BUSCAR (L:T_LISTA; BUSCADO:STRING[50] ;VAR ENC:BOOLEAN);
+VAR
+    E:T_DATO_T;
+BEGIN
+    PRIMERO(L);
+    WHILE NOT FIN(L) AND (NOT ENC) DO
+    BEGIN
+        RECUPERAR(L,E);
+        IF E.N_CONT = BUSCADO THEN 
+            ENC:=TRUE
+        ELSE 
+            SIGUIENTE (L);
+    END;
+END;
+
+PROCEDURE MUESTRA_LISTA(L:T_LISTA); //LISTADO
+VAR
+E:T_DATO_T;
+BEGIN
+    PRIMERO(L);
+    WHILE NOT FIN(L) DO
+    BEGIN
+        RECUPERAR(L,E);
+        MUESTRA_DATOS(E);
+        SIGUIENTE(L);
+    END;
+END;
+
+PROCEDURE MUESTRA_DATOS(VAR E:T_DATO_T);
+begin
+  WITH (E) DO
+    begin
+        Writeln ('1) NUMERO DE CONTRIBUYENTE: ',N_CONT );
+        Writeln ('2) NUMERO PLANO DE MENSURA:', N_MENS;
+        Writeln ('3) FECHA INSCRIPCION: ', F_INC);
+        Writeln ('4) Direccion:', DOMICILIO);
+        Writeln ('5) ZONA', ZONA);
+        Writeln ('6) TIPO EDIFICACION : ', TIPO_E);
+        WRITELN ('7) AVALUO: ', AVALUO) ;
+        WRITELN ('8) SUPERFICIE: ', SUPERFICIE) ;
+    end;
+end;
