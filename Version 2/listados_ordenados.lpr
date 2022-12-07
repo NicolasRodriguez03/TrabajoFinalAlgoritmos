@@ -12,17 +12,17 @@ type
   end;
 
 implementation
-    PROCEDURE LISTADO_INORDEN(VAR ARBOL_AYN:T_PUNT; L:T_LISTA);
+    PROCEDURE LISTADO_AYN_CON_AVALUO(VAR ARBOL:T_PUNT; L:T_LISTA);
     BEGIN
     IF ARBOL <> NIL THEN BEGIN
         BEGIN
-            INORDEN (ARBOL^.SAI);
+            INORDEN (ARBOL^.H_I);
             WRITELN (ARBOL^.INFO.CLAVE);
             LEER_DATO_C(ARCH_C, ARBOL^.POS_ARCH, REG);
             Primero(L)
             while not(FINLISTA(L)) do
                 IF L.ACT^.INFO.N_CONT = REG.N_CONT THEN
-                MUESTRA_DATOS(L.ACT^.INFO);
+                MUESTRA_DATOS(L.ACT);
                 SIGUIENTE(L);
             END;
             INORDEN (ARBOL^.SAD);
