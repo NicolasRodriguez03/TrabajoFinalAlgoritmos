@@ -2,12 +2,14 @@ unit manejo_terrenos;
 
 interface
 uses
+    definicion_datos;
     terreno;
     lista_terreno;
     PROCEDURE CARGAR_T(VAR X: T_DATO_T);
     PROCEDURE ALTA_T (VAR ARCH_T: ARCHIVO_T);
     PROCEDURE AVALUO(VAR X:T_DATO_T);
     PROCEDURE GUARDAR_DATO (VAR ARCH: ARCHIVO_T, POS:CARDINAL; REG:T_DATO_T);
+    Procedure crear_abrir(var ARCH_T:T_DATO_T);
 
 implementation
 
@@ -190,4 +192,14 @@ implementation
     end;
 
     PROCEDURE CONSULTA_T(VAR ARCH_T:ARCHIVO_T; POS:CARDINAL);
+
+    Procedure crear_abrir(var ARCH_T:T_DATO_T);
+    begin
+    assign(ARCH_T, ruta_terr);
+    {$i-}
+    reset(ARCH_T);
+    {$i+}
+    if ioresult <> 0 then
+        rewrite(ARCH_T);
+    end;
 end.

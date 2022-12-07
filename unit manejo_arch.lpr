@@ -7,7 +7,7 @@ uses
     PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C, VAR ARBOL:T_PUNT);
     PROCEDURE RECUP_ARCH_AYN (VAR ARCH_C:ARCHIVO_C, VAR ARBOL:T_PUNT);
     PROCEDURE ALTA(r: DATO_CONT; var ARCH_C: ARCH_C);
-    PROCEDURE CARGAR_T(VAR X: DATOS_CONT);
+    PROCEDURE CARGAR_CONT(VAR X: DATOS_CONT);
     PROCEDURE GUARDA_DATO(VAR ARCH_C:ARCHIVO_C; var POS:WORD; REG:DATOS_CONT);
     
 
@@ -30,7 +30,6 @@ PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT);      // ANTES
             AGREGAR_ARBOL(ARBOL, AUX_X);
             POS:= POS+1;
         end;
-        
     end;
 
     PROCEDURE RECUP_ARCH_AYN (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT);      // ANTES VERIFICAR QUE EXISTA EL ARCHIVO
@@ -49,10 +48,9 @@ PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT);      // ANTES
             AGREGAR_ARBOL(ARBOL, AUX_X);
             POS:= POS+1;
         end;
-        
     end;
 
-        PROCEDURE CARGAR_T(VAR X: DATOS_CONT);
+    PROCEDURE CARGAR_CONT(VAR X: DATOS_CONT);
     BEGIN
         with (X) do
         begin
@@ -77,13 +75,19 @@ PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT);      // ANTES
         end;
     END;
 
-    PROCEDURE ALTA_C(r: DATOS_CONT; var ARCH_C: ARCH_C);
+    PROCEDURE ALTA_C(r: DATOS_CONT; var ARCH_C: ARCH_C; VAR ARBOL_AYN:T_PUNT; VAR ARBOL_DNI:T_PUNT);
     var
+        AUX_X,AUX_Y:T_DATO_ARBOL;
     begin
       with (R) do
       begin
           GUARDAR_DATO (ARCH_C,POS,R);
-          AGREGAR_ARBOL(R);
+          AUX_X.CLAVE:= CONCAT(R.APELLIDO, R.NOMBRE);
+          AUX_Y.CLAVE:= (R.DNI);
+          AUX_X.POS_ARCH:= POS;
+          AUX_Y.POS_ARCH:= POS;
+          AGREGAR_ARBOL(ARBOL_AYN, AUX_X);
+          AGREGAR_ARBOL(ARBOL_DNI, AUX_Y);
       end;
     end;
 
@@ -238,5 +242,16 @@ PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT);      // ANTES
       MOSTRAR_DATOS (ARCH_C; POS, DATO);
       MODIF_DATO (ARCH_C; POS, DATO);
       GUARDAR_DATO(ARCH_C, POS; DATO);
+    end;
+
+    Procedure crear_abrir(var ARCH_C:ARCHIVO_C);
+    begin
+    assign(ARCH_C, ruta_cont);
+    {$i-}
+    reset(ARCH_C);
+    {$i+}
+    if ioresult <> 0 then
+        rewrite(ARCH_C);
+
     end;
 end.

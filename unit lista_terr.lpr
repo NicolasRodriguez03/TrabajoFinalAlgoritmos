@@ -3,7 +3,7 @@ unit lista_terreno;
 
 interface
     PROCEDURE CREARLISTA (VAR L:T_LISTA);
-    PROCEDURE AGREGAR (VAR L:T_LISTA; X:T_DATO_T);
+    PROCEDURE AGREGAR_ZONA (VAR L:T_LISTA; X:T_DATO_T);
     FUNCTION LISTA_LLENA (VAR L:T_LISTA): BOOLEAN;
     FUNCTION LISTA_VACIA (VAR L:T_LISTA): BOOLEAN;
     PROCEDURE ELIMINARLISTA (VAR L:T_LISTA;BUSCADO: STRING; VAR X:T_DATO_T);
@@ -36,37 +36,14 @@ type
 	END;
 END;
 
+//VAR
+//  L_Z, L_F:T_LISTA
 IMPLEMENTATION
 
 PROCEDURE CREARLISTA (VAR L:T_LISTA);
 BEGIN
     L.TAM:=0;
     L.CAB:=NIL;
-END;
-
-PROCEDURE AGREGAR_FECHA(VAR L:T_LISTA; X:T_DATO_T);
-VAR DIR, ANT : T_PUNT;
-BEGIN
-    NEW (DIR);
-    DIR^.INFO:= X;
-    IF (L.CAB= NIL) OR ((L.CAB^.INFO.F_INC + L.CAB^.INFO.ZONA) < (X.F_INC + X.ZONA)) THEN
-    BEGIN
-        DIR^.SIG:= L.CAB;
-        L.CAB:= DIR;
-    END
-    ELSE
-    BEGIN
-        ANT:= L.CAB;
-        L.ACT:= L.CAB^.SIG;
-        WHILE (L.ACT <> NIL) AND ((L.ACT^.INFO.F_INC + L.ACT^.INFO.ZONA) < (X.F_INC + X.ZONA)) DO
-        BEGIN
-            ANT:= L.ACT;
-            L.ACT:= L.ACT^.SIG
-        END;
-        DIR^.SIG:= L.ACT;
-        ANT^.SIG:= DIR;
-    END;
-    INC(L.TAM)
 END;
 
 PROCEDURE AGREGAR_ZONA(VAR L:T_LISTA; X:T_DATO_T);
@@ -94,7 +71,30 @@ BEGIN
     INC(L.TAM)
 END;
 
-GE
+PROCEDURE AGREGAR_ZONA(VAR L:T_LISTA; X:T_DATO_T);
+VAR DIR, ANT : T_PUNT;
+BEGIN
+    NEW (DIR);
+    DIR^.INFO:= X;
+    IF (L.CAB= NIL) OR ((L.CAB^.INFO.F_INC) < (X.F_INC)) THEN
+    BEGIN
+        DIR^.SIG:= L.CAB;
+        L.CAB:= DIR;
+    END
+    ELSE
+    BEGIN
+        ANT:= L.CAB;
+        L.ACT:= L.CAB^.SIG;
+        WHILE (L.ACT <> NIL) AND ((L.ACT^.INFO.F_INC) < (X.F_INC)) DO
+        BEGIN
+            ANT:= L.ACT;
+            L.ACT:= L.ACT^.SIG
+        END;
+        DIR^.SIG:= L.ACT;
+        ANT^.SIG:= DIR;
+    END;
+    INC(L.TAM)
+END;
 
 PROCEDURE SIGUIENTE(VAR L:T_LISTA);
 BEGIN
