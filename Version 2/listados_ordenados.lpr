@@ -29,9 +29,11 @@ implementation
         end;
     END;
     
-    PROCEDURE LISTADO_FECHA(var L:T_LISTA);
-    VAR X:STRING[4]
+    PROCEDURE LISTADO_FECHA();
+    VAR X:STRING[4];
+    L:T_LISTA;
     begin
+    GENERAR_LISTA_FECHA( L; ARCH_T);
       Writeln('Ingrese año');
       Readln (x);
           PRIMERO(L);
@@ -41,6 +43,21 @@ implementation
                 if COPY(E.F_INC,7,10)=x
                 MUESTRA_DATOS(E);
             SIGUIENTE(L);
-        END;    
+        END;
+ 
     end;
+
+    PROCEDURE LISTADO_ZONA(); //MOSTRAR BIENNNNNNNNNNNNNNNNN
+    VAR
+    E:T_DATO_T;
+    BEGIN
+    GENERAR_LISTA_ZONA(L; ARCH_T);
+        PRIMERO(L);
+        WHILE NOT FIN(L) DO
+        BEGIN
+            RECUPERAR(L,E);
+            MUESTRA_DATOS(E);
+            SIGUIENTE(L);
+        END;
+    END;
 end.

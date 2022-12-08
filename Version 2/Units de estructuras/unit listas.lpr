@@ -1,4 +1,4 @@
-unit lista_terreno;
+unit lista;
     
 
 interface
@@ -71,7 +71,7 @@ BEGIN
     INC(L.TAM)
 END;
 
-PROCEDURE AGREGAR_ZONA(VAR L:T_LISTA; X:T_DATO_T);
+PROCEDURE AGREGAR_FECHA(VAR L:T_LISTA; X:T_DATO_T);
 VAR DIR, ANT : T_PUNT;
 BEGIN
     NEW (DIR);
@@ -168,30 +168,5 @@ BEGIN
     END;
 END;
 
-PROCEDURE MUESTRA_LISTA(L:T_LISTA); //LISTADO
-VAR
-E:T_DATO_T;
-BEGIN
-    PRIMERO(L);
-    WHILE NOT FIN(L) DO
-    BEGIN
-        RECUPERAR(L,E);
-        MUESTRA_DATOS(E);
-        SIGUIENTE(L);
-    END;
-END;
 
-PROCEDURE MUESTRA_DATOS(VAR E:T_DATO_T);
-begin
-  WITH (E) DO
-    begin
-        Writeln ('1) NUMERO DE CONTRIBUYENTE: ',N_CONT );
-        Writeln ('2) NUMERO PLANO DE MENSURA:', N_MENS;
-        Writeln ('3) FECHA INSCRIPCION: ', F_INC);
-        Writeln ('4) Direccion:', DOMICILIO);
-        Writeln ('5) ZONA', ZONA);
-        Writeln ('6) TIPO EDIFICACION : ', TIPO_E);
-        WRITELN ('7) AVALUO: ', AVALUO) ;
-        WRITELN ('8) SUPERFICIE: ', SUPERFICIE) ;
-    end;
 end;

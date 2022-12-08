@@ -176,20 +176,33 @@ implementation
     procedure MODIFICACION_T(VAR ARCH_T:ARCHIVO_T; POS:CARDINAL);
     begin
       MOSTRAR_DATOS (ARCH_T; POS, DATO);
-      MODIF_DATO (ARCH_T; POS, DATO);ARCHIVO_T
+      MODIF_DATO_t(ARCH_T; POS, DATO);ARCHIVO_T
       GUARDAR_DATO(ARCH_T, POS; DATO);
     end;
 
-    PROCEDURE GENERAR_LISTAS(VAR L_FECHA, VAR L_ZONA: T_LISTA; VAR ARCH_T:ARCHIVO_T);
+    PROCEDURE GENERAR_LISTA_FECHA(VAR L: T_LISTA; VAR ARCH_T:ARCHIVO_T);
     VAR 
         I:CARDINAL;
     begin
+    CREARLISTA(L);
       For I:=0 TO (FILESIZE(ARCH_T)-1) DO
-      PROCEDURE LEER_DATO_T(ARCH_T; I, DATO);
-      PROCEDURE AGREGAR_FECHA(L_FECHA; DATO);
-      PROCEDURE AGREGAR_ZONA(L_ZONA; DATO);
+      begin
+      LEER_DATO_T(ARCH_T; I, DATO);
+      AGREGAR_FECHA(L_FECHA; DATO);
+  
       END;
     end;
+
+        PROCEDURE GENERAR_LISTA_ZONA(VAR L:T_LISTA; VAR ARCH_T:ARCHIVO_T);
+    VAR 
+        I:CARDINAL;
+    begin
+    CREARLISTA(L);
+      For I:=0 TO (FILESIZE(ARCH_T)-1) DO
+      begin
+      LEER_DATO_T(ARCH_T; I, DATO);
+      AGREGAR_ZONA(L_ZONA; DATO);
+      END;
 
     PROCEDURE CONSULTA_T(VAR ARCH_T:ARCHIVO_T; POS:CARDINAL);
 
@@ -202,4 +215,34 @@ implementation
     if ioresult <> 0 then
         rewrite(ARCH_T);
     end;
+
+    PROCEDURE MUESTRA_DATOS(VAR E:T_DATO_T);
+    begin
+    WITH (E) DO
+        begin
+            Writeln ('1) NUMERO DE CONTRIBUYENTE: ',N_CONT );
+            Writeln ('2) NUMERO PLANO DE MENSURA:', N_MENS);
+            Writeln ('3) FECHA INSCRIPCION: ', F_INC);
+            Writeln ('4) Direccion:', DOMICILIO);
+            Writeln ('5) ZONA', ZONA);
+            Writeln ('6) TIPO EDIFICACION : ', TIPO_E);
+            WRITELN ('7) AVALUO: ', AVALUO) ;
+            WRITELN ('8) SUPERFICIE: ', SUPERFICIE) ;
+        end;
+
+
+     procedure busqueda_archivo_mens (ARCH_T: archivo_t, x:string, var pos:word);
+      var i:word;
+      begin
+      crear_abrir(arch_t);
+      pos:=-1;
+      i:=0;
+      while pos<>-1 and i<FILESIZE(arch_t) do 
+      begin
+      LEER_DATO_T(ARCH_T,i,t)
+      if t.N_MENS=x do 
+      pos:=I
+      else
+      i:=i+1; 
+      end;
 end.

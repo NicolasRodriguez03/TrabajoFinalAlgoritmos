@@ -20,7 +20,7 @@ implementation
     Readln (CLAVE);
     end;
 
-PROCEDURE BUSCAR(var encontrado:boolean; var pos:integer);
+PROCEDURE BUSCAR(var pos:integer);
 VAR 
   AUX
 begin
