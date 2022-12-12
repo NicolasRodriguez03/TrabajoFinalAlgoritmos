@@ -6,9 +6,10 @@ Type
 
 implementation
 
-PROCEDURE M_CONTRIBUYENTES ;
-VAR 
+PROCEDURE M_CONTRIBUYENTES();
+VAR pos: INTEGER;
 BEGIN
+leer_clave
 BUSCAR(pos); 
         if pos>=0 then 
 begin
@@ -25,9 +26,10 @@ begin
           else
           begin
             if OP='3' then
-                  // ACA HAY QUE PONER EL PROCEDIMIENTO
+                 MOSTRAR_DATOS_C(ARCH_C, POS);
             else
             Writeln ('Ingrese un valor valido');
+            M_CONTRIBUYENTES();
           end;
         end;
 end;
@@ -36,6 +38,6 @@ end;
     WRITELN('Contribuyente no encontrado, sera dado de alta');
     ALTA_C(ARCH_C, ARBOL_AYN, ARBOL_DNI);
  end;
-
+menu();
 
 end.

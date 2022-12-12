@@ -2,6 +2,7 @@ unit lista;
     
 
 interface
+USES definicion_datos;
     PROCEDURE CREARLISTA (VAR L:T_LISTA);
     PROCEDURE AGREGAR_ZONA (VAR L:T_LISTA; X:T_DATO_T);
     FUNCTION LISTA_LLENA (VAR L:T_LISTA): BOOLEAN;
@@ -13,15 +14,6 @@ interface
 
 type
 
-	T_DATO_T: RECORD								// Registro de datos de cada terreno, está contenido en la info de los nodos
-		N_CONT: STRING [8];		// Numero de contribuyente
-		N_MENS: STRING[15]		// Numero de plano de mensura
-		AVALUO: REAL;
-		DOMICILIO: STRING [60];
-		SUPERFICIE: REAL;
-		ZONA: BYTE[1..5]
-		TIPO_E: BYTE[1..5]		// Tipo de la edificación
-	END;
 
 	T_PUNT_T= ^T_NODO_T;							// Puntero de la lista de terrenos 
 

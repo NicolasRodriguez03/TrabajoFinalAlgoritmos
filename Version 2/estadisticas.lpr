@@ -58,4 +58,34 @@ implementation
       end;
       Cant_baja:=((C*100)/TOTAL);
     end;
+
+
+   FUNCTION PROP_MP (VAR ARCH_C: ARCHIVO_C, VAR ARCH_T: ARCHIVO_T ):REAL;
+   VAR I,J,TOTAL,TOTAL_MP:BYTE;
+        X:DATOS_CONT;
+        X_1:T_DATO_T;
+   BEGIN
+    TOTAL:=0;
+    TOTAL_MP:=0
+    I:=0;
+    FOR I:0 TO (FILESIZE(ARCH_C)-1) DO 
+    BEGIN
+      C:=0;
+      LEER_DATO_C(ARCH_C,I,X);
+      IF X.ESTADO = TRUE THEN 
+      BEGIN
+        J:=0;
+        TOTAL:=TOTAL+1;
+        WHILE C<2 AND J<(FILESIZE(ARCH_T)-1) DO
+        BEGIN
+          LEER_DATO_T(ARCH_T,J,X_1);
+          IF X_1.N_CONT= X.N_CONT THEN 
+            C:=C+1;
+        END;
+      END;
+      IF C=2 THEN 
+        TOTAL_MP:= TOTAL_MP+1;
+    END;
+    PROP_MP:=((TOTAL_MP*100)/TOTAL);
+  END;
 end.

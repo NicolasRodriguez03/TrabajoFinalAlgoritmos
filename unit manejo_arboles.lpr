@@ -1,6 +1,8 @@
-unit ;
+unit manejo_Arboles;
 
 interface
+  USES
+    manejo_archivo_cont;
   procedure leer_clave(var x:string; var clave:string);
   PROCEDURE CARGAR_ARBOL(VAR ARBOL:T_PUNT);
   PROCEDURE BUSCAR (ARBOL:T_PUNT);
@@ -14,31 +16,25 @@ interface
 implementation
     procedure leer_clave(var x:string; var clave:string);
     begin
-    Writeln ('Desea buscar por NOMBRE o DNI?')
+    Writeln ('Va a ingresar un NOMBRE o un DNI?')
     Readln (x);
     Writeln ('Ingrese CLAVE');
     Readln (CLAVE);
     end;
 
-PROCEDURE BUSCAR(var pos:integer);
+PROCEDURE BUSCAR(VAR ARBOL_DNI:T_PUNT; VAR ARBOL_AYN:T_PUNT; var pos:integer);
 VAR 
-  AUX
+  AUX:T_PUNT;
 begin
+  POS:=-1;
   leer_clave(x,clave);
   If (x=nombre) or (x=NOMBRE) or (x=Nombre) then
     AUX:= PREORDEN(ARBOL_AYN, CLAVE);
-    IF AUX<>NIL THEN
-      encontrado:= TRUE;
-      POS:= AUX^.INFO.POS_ARCH;
-    ELSE 
-      encontrado:= FALSE;
-  else
-    PREORDEN(ARBOL_DNI, CLAVE);
-    IF AUX<>NIL THEN
-      encontrado:= TRUE;
-      POS:= AUX^.INFO.POS_ARCH;
-    ELSE 
-      encontrado:= FALSE;
+  ELSE
+    AUX:= PREORDEN(ARBOL_DNI, CLAVE);
+  IF AUX<>NIL THEN
+    POS:= AUX^.INFO.POS_ARCH;
+  end;
 end;
 
 PROCEDURE AGREGAR_NODO (VAR ARBOL:T_PUNT);
@@ -51,9 +47,12 @@ READLN (X);
 AGREGAR(ARBOL, X);
 end;
 
-PROCEDURE MUESTRA_DATOS (POS: T_PUNT);
+PROCEDURE MUESTRA_DATOS (VAR ARCH_C:ARCHIVO_C; POS: T_PUNT);
+VAR
+  X:WORD;
 BEGIN
-WRITELN (POS^.INFO)
+X:= POS^.INFO.POS_ARCH;
+MOSTRAR_DATOS_C(arch_c,x);
 END;
 
 PROCEDURE CARGAR_ARBOL(VAR ARBOL:T_PUNT);
@@ -72,23 +71,6 @@ WRITE ('CONTINUA? PRESIONE N PARA SALIR: ');
 READLN (TECLA);
 end;
 END;
-
-PROCEDURE CONSULTA (ARBOL:T_PUNT);
-VAR POS:T_PUNT; CAR:T_DATO;
-BEGIN
-WRITE('BUSCAR: ');
-READLN (CAR);
-POS:= PREORDEN (ARBOL,CAR);
-IF POS = NIL THEN WRITELN ('NO SE ENCUENTRA' )
-ELSE MUESTRA_DATOS (POS);
-end;
-
-PROCEDURE BUSCAR (ARBOL:T_PUNT);
-BEGIN
-IF ARBOL_VACIO (ARBOL) THEN WRITE ('ARBOL VACIO')
-ELSE CONSULTA(ARBOL);
-READKEY
-end;
 
 PROCEDURE LISTAR (ARBOL:T_PUNT);
 BEGIN
@@ -109,13 +91,12 @@ ELSE
 PREORDEN := PREORDEN(ARBOL^.H_D,BUSCADO)
 END;
 
-PROCEDURE INORDEN(VAR ARBOL:T_PUNT);
-BEGIN
-  IF ARBOL <> NIL THEN BEGIN
-    INORDEN (ARBOL^.H_I);
-    WRITELN (ARBOL^.INFO);
-    INORDEN (ARBOL^.H_D);
-  end;
-END;
 
+
+FUNCTION OBTENER_N_CONT (VAR ARCH_C:ARCHIVO_C; POS: INTEGER):STRING[8];
+Var dato: DATOS_CONT;
+begin
+LEER_DATO_C(arch_c,pos,dato);
+OBTENER_N_CONT:= dato.n_cont;
+end;
 end.
