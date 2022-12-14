@@ -7,10 +7,10 @@ type
   lista_terreno;
   definicion_datos;
   end;
-
+procedure Impresion(pos:CARDINAL);
 implementation
 
-procedure Impresion(pos:WORD);
+procedure Impresion(pos:CARDINAL);
 var
 begin
   MOSTRAR_DATOS_C(ARCH_C, POS, REG);

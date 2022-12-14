@@ -38,6 +38,7 @@ Type
 	END;
 
 	ARCHIVO_C= FILE OF DATO_CONT;
+	ARCHIVO_T= FILE OF T_DATO_T;
 
 
 end;

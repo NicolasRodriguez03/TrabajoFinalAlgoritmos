@@ -1,14 +1,14 @@
 unit menu_terrenos;
 
 interface
-USES manejo_terrenos;
-Type
+USES manejo_terrenos, CRT;
+procedure m_terrenos();
 
 implementation
 procedure m_terrenos();
 var
     x_1:string[15]; //numero de plano de mensura
-    OP:STRING;
+    OP,OP_1:STRING; 
 begin
 Writeln('Ingrese n. de plano de mensura');
 Readln (x_1);
@@ -20,7 +20,7 @@ begin
     Writeln ('3) Consulta');
     READ (OP);
     If OP='1' then
-            // ACA HAY QUE PONER EL PROCEDIMIENTO
+          BAJA_TERRENO(arch_t, pos);
         else
         begin
           if OP='2' then
@@ -28,7 +28,7 @@ begin
           else
           begin
             if OP='3' then
-                  // ACA HAY QUE PONER EL PROCEDIMIENTO
+              MOSTRAR_DATOS_T(ARCH_T, POS);
             else
             Writeln ('Ingrese un valor valido');
           end;
@@ -36,7 +36,17 @@ begin
 end;
  else
  begin
-   Writeln ('Realizar ALTA');
+  Writeln('Terreno no encontrado, desea realizar el alta? (si/no)');
+  Readln (OP_1);
+  IF (OP='SI') OR (OP='Si') or (OP='si') then 
+    begin
+    Writeln ('Realizando ALTA');
+    ALTA_T(ARCH_T);
+    end;
+  m_terrenos();
+
+
  end;
+menu();
 
 end.

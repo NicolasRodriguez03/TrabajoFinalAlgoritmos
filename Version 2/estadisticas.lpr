@@ -1,28 +1,44 @@
 unit estadisticas;
 
 interface
+USES
+SYSUTILS;
 definicion_datos;
 manejo_contribuyente;
 
-
-type
-
+FUNCTION CONVERTIR_FECHA(X:STRING):INTEGER;
+FUNCTION cant_ins(VAR ARCH_C:ARCHIVO_C):INTEGER;
+FUNCTION PORC_TIPO(Var ARCH_T:ARCHIVO_T; X:BYTE):REAL;
+ function Cant_baja(var ARCH_C:ARCHIVO_C):integer;
+FUNCTION PROP_MP (VAR ARCH_C: ARCHIVO_C, VAR ARCH_T: ARCHIVO_T ):REAL;
 
 implementation
-    FUNCTION cant_ins(VAR ARCH_C:ARCHIVO_C):INTEGER;
+    FUNCTION CONVERTIR_FECHA(X:STRING):INTEGER;
+    begin
+      D:= STRTOINT(COPY(X,1,2));
+      M:= STRTOINT(COPY(X,4,2));
+      A:= STRTOINT(COPY(X,7,4));
+      CONVERTIR_FECHA:= ((A*365)+(M*30)+D);
+    end;
+
+  FUNCTION cant_ins(VAR ARCH_C:ARCHIVO_C):INTEGER;
     var
         f_in,f_fin:String[10];
         C, I:INTEGER;
         X:T_DATO_T;
+        F1,F2,F3: INTEGER;
     begin
-      Writeln('Ingrese fecha de inicio');
+      Writeln('Ingrese fecha de inicio (DD/MM/AAAA)');
       Readln (F_IN);
-      Writeln('Ingrese fecha de fin');
+      F1:=CONVERTIR_FECHA(F_IN);
+      Writeln('Ingrese fecha de fin (DD/MM/AAAA)');
       Readln (F_FIN);
+      F2:= CONVERTIR_FECHA(F_FIN)
       FOR I:=0 TO (FILESIZE(ARCH_C)-1) DO
       begin
         LEER_DATO_C(ARCH_C,I,X);
-        IF (X.F_INC<=F_IN) AND (X.F_INC>=F_FIN) THEN
+        F3:= CONVERTIR_FECHA(X);
+        IF (F3>=F1) AND (F3<=F2) THEN
         C:=C+1;
       end;
       cant_ins:=C;

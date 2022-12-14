@@ -7,7 +7,7 @@ interface
     manejo_Arboles;
 
 
- PROCEDURE GENERAR_LISTA_ZONA(VAR L:T_LISTA; VAR ARCH_T:ARCHIVO_T);
+PROCEDURE GENERAR_LISTA_ZONA(VAR L:T_LISTA; VAR ARCH_T:ARCHIVO_T);
 PROCEDURE LISTADO_AYN_CON_AVALUO(VAR ARBOL:T_PUNT; L:T_LISTA);
 PROCEDURE LISTADO_FECHA();
 PROCEDURE LISTADO_ZONA();
@@ -50,7 +50,7 @@ implementation
         WHILE NOT FIN(L) DO
         BEGIN
             RECUPERAR(L,E);
-                if COPY(E.F_INC,7,10)=x
+                if COPY(E.F_INC,7,4)=x
                 begin
                 MUESTRA_DATOS(E);
                 GOTOXY(1,J);

@@ -3,7 +3,12 @@ unit manejo_contribuyentes;
 interface
     manejo_archivo_cont
     manejo_Arboles;
-
+    MANEJO_TERRENOS;
+    
+ PROCEDURE ALTA_C(var ARCH_C: ARCH_C; VAR ARBOL_AYN:T_PUNT; VAR ARBOL_DNI:T_PUNT);
+ PROCEDURE MODIF_DATO_C(VAR ARCH_C: ARCHIVO_C; POS:CARDINAL; REG:DATOS_CONT);
+ procedure MODIFICACION_C(VAR ARCH_C:ARCHIVO_C; POS:CARDINAL);
+  PROCEDURE BAJA(VAR ARCH_C:ARCHIVO_C; POS:CARDINAL );
 end;
 
 implementation
@@ -11,7 +16,7 @@ implementation
     var
         AUX_X,AUX_Y:T_DATO_ARBOL;
         R:DATOS_CONT;
-        POS:=WORD
+        POS:CARDINAL;
     begin
       CARGAR_CONT(R);
       POS:=FILESIZE(ARCH_C)
@@ -24,13 +29,14 @@ implementation
       AGREGAR_ARBOL(ARBOL_DNI, AUX_Y);
     end;
 
- PROCEDURE MODIF_DATO_C(VAR ARCH_C: ARCHIVO_C; POS:CARDINAL; REG:DATOS_CONT);
+    PROCEDURE MODIF_DATO_C(VAR ARCH_C: ARCHIVO_C; POS:CARDINAL; VAR REG:DATOS_CONT; );
     VAR
         OP:BYTE;
         OP_2:string[2];
         AUX:string[50];
         AUX_2:BOOLEAN[];
     begin
+      LEER_DATO_C(ARCH_C,POS,REG);
       Writeln ('¿Que dato desea modificar? (Ingrese nro. de dato o ingrese 0 para volver al menu)');
       Readln (OP);
       CASE OP OF
@@ -52,6 +58,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.NOMBRE:= AUX;
+            
             END;
            ELSE
             MODIF_DATO_C (ARCH_C; POS; REG);
@@ -92,6 +99,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.DNI:= AUX;
+            
             END;
            ELSE
             MODIF_DATO_C (ARCH_C; POS; REG);
@@ -140,14 +148,26 @@ implementation
     
     procedure MODIFICACION_C(VAR ARCH_C:ARCHIVO_C; POS:CARDINAL);
     begin
-      MOSTRAR_DATOS (ARCH_C; POS, DATO);
+      MOSTRAR_DATOS_C(ARCH_C; POS, DATO);
       MODIF_DATO_C (ARCH_C; POS, DATO);
       GUARDAR_DATO(ARCH_C, POS; DATO);
     end;
    
-   procedure Consulta();
-   var 
-   begin 
-   end;
+    PROCEDURE BAJA(VAR ARCH_C:ARCHIVO_C; POS:CARDINAL; );
+    VAR
+        OP:STRING; reg=DATOS_CONT; X:STRING[8];
+    begin
+      MOSTRAR_DATOS_C(ARCH_C, POS);
+      Writeln('Desea dar de baja a este contribuyente? (si/no)');
+      Readln (OP);
+      IF (OP='SI') OR (OP='Si') or (OP='si') then 
+      begin
+        READ(ARCH_C, REG);
+        REG.ESTADO:= FALSE;
+        WRITE(ARCH_C,REG);
+        X:=REG.N_CONT;
+        BAJA_CONT_TER ( ARCH_T; X);
+      end;
+    end;
    
 end.

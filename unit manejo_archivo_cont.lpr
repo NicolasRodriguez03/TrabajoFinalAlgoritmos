@@ -4,28 +4,39 @@ interface
 uses
   unit_archivo;
   unit_arboles;
+    Procedure crear_abrir_C(var ARCH_C:ARCHIVO_C);
     PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C, VAR ARBOL:T_PUNT);
     PROCEDURE RECUP_ARCH_AYN (VAR ARCH_C:ARCHIVO_C, VAR ARBOL:T_PUNT);
-    PROCEDURE ALTA(r: DATO_CONT; var ARCH_C: ARCH_C);
     PROCEDURE CARGAR_CONT(VAR X: DATOS_CONT);
-    PROCEDURE GUARDA_DATO(VAR ARCH_C:ARCHIVO_C; var POS:WORD; REG:DATOS_CONT);
-    
+    PROCEDURE LEER_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:CARDINAL; REG:DATOS_CONT);
+    PROCEDURE GUARDA_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:CARDINAL; REG:DATOS_CONT);
+    PROCEDURE MOSTRAR_DATOS_C(VAR ARCH_C: ARCHIVO_C; POS:CARDINAL);
+    FUNCTION OBTENER_N_CONT (VAR ARCH_C:ARCHIVO_C; POS: CARDINAL):STRING[8];
 end;
 
 
 implementation
+    Procedure crear_abrir_C(var ARCH_C:ARCHIVO_C);
+    begin
+    assign(ARCH_C, ruta_cont);
+    {$i-}
+    reset(ARCH_C);
+    {$i+}
+    if ioresult <> 0 then
+        rewrite(ARCH_C);
+    end;
 
-PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT);      // ANTES VERIFICAR QUE EXISTA EL ARCHIVO
+    PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT);      // ANTES VERIFICAR QUE EXISTA EL ARCHIVO
     VAR 
         POS:CARDINAL;
         AUX:DATOS_CONT;
         AUX_X:T_DATO_ARBOL;
     begin
         POS:=0;
+        crear_abrir_C(ARCH_C);
         WHILE NOT(EOF(ARCH_C)) DO
         begin
-            SEEK(ARCH_C,POS);
-            READ(ARCH_C,AUX);
+            LEER_DATO_c(ARCH_C,POS,AUX);
             AUX_X.CLAVE:= AUX.DNI;
             AUX_X.POS_ARCH:= POS;
             AGREGAR_ARBOL(ARBOL, AUX_X);
@@ -40,10 +51,10 @@ PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT);      // ANTES
         AUX_X:T_DATO_ARBOL;
     begin
         POS:=0;
+        crear_abrir_C(ARCH_C);
         WHILE NOT(EOF(ARCH_C)) DO
         begin
-            SEEK(ARCH_C,POS);
-            READ(ARCH_C,AUX);
+            LEER_DATO_c(ARCH_C,POS,AUX);
             AUX_X.CLAVE:= CONCAT(AUX.APELLIDO, AUX.NOMBRE);
             AUX_X.POS_ARCH:= POS;
             AGREGAR_ARBOL(ARBOL, AUX_X);
@@ -76,18 +87,18 @@ PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT);      // ANTES
         end;
     END;
 
- 
-
-    PROCEDURE GUARDA_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:WORD; REG:DATOS_CONT);
+    PROCEDURE LEER_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:CARDINAL; REG:DATOS_CONT);
     BEGIN
-        SEEK(ARCH_C, POS);
-        WRITE(ARCH_C, REG);
-    END;
-
-    PROCEDURE LEER_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:WORD; REG:DATOS_CONT);
-    BEGIN
+        crear_abrir_C(ARCH_C);
         SEEK(ARCH_C, POS);
         READ(ARCH_C, REG);
+    END;
+
+    PROCEDURE GUARDA_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:CARDINAL; REG:DATOS_CONT);
+    BEGIN
+        crear_abrir_C(ARCH_C);
+        SEEK(ARCH_C, POS);
+        WRITE(ARCH_C, REG);
     END;
 
     PROCEDURE MOSTRAR_DATOS_C(VAR ARCH_C: ARCHIVO_C; POS:CARDINAL);
@@ -111,16 +122,10 @@ PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT);      // ANTES
         Write ('INACTIVO');
     END;
 
-    
-
-    Procedure crear_abrir(var ARCH_C:ARCHIVO_C);
+    FUNCTION OBTENER_N_CONT (VAR ARCH_C:ARCHIVO_C; POS: CARDINAL):STRING[8];
+    Var dato: DATOS_CONT;
     begin
-    assign(ARCH_C, ruta_cont);
-    {$i-}
-    reset(ARCH_C);
-    {$i+}
-    if ioresult <> 0 then
-        rewrite(ARCH_C);
-
+        LEER_DATO_C(arch_c,pos,dato);
+        OBTENER_N_CONT:= dato.n_cont;
     end;
 end.

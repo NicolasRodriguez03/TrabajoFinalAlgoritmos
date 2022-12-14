@@ -4,13 +4,16 @@ unit lista;
 interface
 USES definicion_datos;
     PROCEDURE CREARLISTA (VAR L:T_LISTA);
-    PROCEDURE AGREGAR_ZONA (VAR L:T_LISTA; X:T_DATO_T);
     FUNCTION LISTA_LLENA (VAR L:T_LISTA): BOOLEAN;
     FUNCTION LISTA_VACIA (VAR L:T_LISTA): BOOLEAN;
-    PROCEDURE ELIMINARLISTA (VAR L:T_LISTA;BUSCADO: STRING; VAR X:T_DATO_T);
     PROCEDURE SIGUIENTE(VAR L:T_LISTA);
     PROCEDURE PRIMERO (L:T_LISTA);
     PROCEDURE FIN (L:T_LISTA): BOOLEAN;
+    PROCEDURE RECUPERAR (L:T_LISTA; VAR E:T);
+    PROCEDURE BUSCAR (L:T_LISTA; BUSCADO:STRING[50] ;VAR ENC:BOOLEAN);
+    PROCEDURE ELIMINARLISTA (VAR L:T_LISTA;BUSCADO: STRING; VAR X:T_DATO_T);
+    PROCEDURE AGREGAR_ZONA (VAR L:T_LISTA; X:T_DATO_T);
+    PROCEDURE AGREGAR_FECHA(VAR L:T_LISTA; X:T_DATO_T);
 
 type
 
@@ -28,137 +31,135 @@ type
 	END;
 END;
 
-//VAR
-//  L_Z, L_F:T_LISTA
 IMPLEMENTATION
 
-PROCEDURE CREARLISTA (VAR L:T_LISTA);
-BEGIN
-    L.TAM:=0;
-    L.CAB:=NIL;
-END;
+    PROCEDURE CREARLISTA (VAR L:T_LISTA);
+    BEGIN
+        L.TAM:=0;
+        L.CAB:=NIL;
+    END;
 
-PROCEDURE AGREGAR_ZONA(VAR L:T_LISTA; X:T_DATO_T);
-VAR DIR, ANT : T_PUNT;
-BEGIN
-    NEW (DIR);
-    DIR^.INFO:= X;
-    IF (L.CAB= NIL) OR ((L.CAB^.INFO.ZONA) < (X.ZONA)) THEN
+    FUNCTION LISTA_LLENA (VAR L:T_LISTA): BOOLEAN;
     BEGIN
-        DIR^.SIG:= L.CAB;
-        L.CAB:= DIR;
-    END
-    ELSE
+        LISTA_LLENA:= GETHEAPSTATUS.TotalFree < SIZEOF(T_NODO) ;
+    END;
+
+    FUNCTION LISTA_VACIA (VAR L:T_LISTA): BOOLEAN;
     BEGIN
-        ANT:= L.CAB;
-        L.ACT:= L.CAB^.SIG;
-        WHILE (L.ACT <> NIL) AND ((L.ACT^.INFO.ZONA) < (X.ZONA)) DO
+        LISTA_VACIA:= L.TAM=0;
+    END;
+
+    PROCEDURE SIGUIENTE(VAR L:T_LISTA);
+    BEGIN
+        L.ACT:= L.ACT^.SIG;
+    END;
+
+    PROCEDURE PRIMERO (L:T_LISTA);
+    BEGIN
+        L.ACT = L.CAB;
+    END;
+
+    PROCEDURE FIN (L:T_LISTA): BOOLEAN;
+    BEGIN
+        FIN:= L.ACT = NIL;
+    END;
+
+    PROCEDURE ELIMINARLISTA (VAR L:T_LISTA;BUSCADO: STRING; VAR X:T_DATO_T;);
+    VAR
+        DIR,ANT:T_PUNTERO;
+    BEGIN
+        IF L.CAB^.INFO.N_CONT = BUSCADO THEN
         BEGIN
-            ANT:= L.ACT;
-            L.ACT:= L.ACT^.SIG
+            X:= L.CAB^.INFO;
+            DIR:= L.CAB;
+            L. CAB:=DIR^.SIG;
+            DISPOSE (DIR);
         END;
-        DIR^.SIG:= L.ACT;
-        ANT^.SIG:= DIR;
-    END;
-    INC(L.TAM)
-END;
-
-PROCEDURE AGREGAR_FECHA(VAR L:T_LISTA; X:T_DATO_T);
-VAR DIR, ANT : T_PUNT;
-BEGIN
-    NEW (DIR);
-    DIR^.INFO:= X;
-    IF (L.CAB= NIL) OR ((L.CAB^.INFO.F_INC) < (X.F_INC)) THEN
-    BEGIN
-        DIR^.SIG:= L.CAB;
-        L.CAB:= DIR;
-    END
-    ELSE
-    BEGIN
-        ANT:= L.CAB;
-        L.ACT:= L.CAB^.SIG;
-        WHILE (L.ACT <> NIL) AND ((L.ACT^.INFO.F_INC) < (X.F_INC)) DO
+        ELSE
         BEGIN
-            ANT:= L.ACT;
-            L.ACT:= L.ACT^.SIG
+            ANT:= L.CAB;
+            L.ACT:= L.CAB^.SIG;
+            WHILE (L.ACT^.INFO.N_CONT < X.N_CONT) DO
+            BEGIN
+                ANT:= L.ACT;
+                L.ACT:= L.ACT^.SIG
+            END;
+            X:= L.ACT^.INFO;
+            ANT^.SIG:= L.ACT^.SIG;
+            DISPOSE (L.ACT);
         END;
-        DIR^.SIG:= L.ACT;
-        ANT^.SIG:= DIR;
+        DEC(L.TAM)
     END;
-    INC(L.TAM)
-END;
 
-PROCEDURE SIGUIENTE(VAR L:T_LISTA);
-BEGIN
-    L.ACT:= L.ACT^.SIG;
-END;
-
-PROCEDURE ELIMINARLISTA (VAR L:T_LISTA;BUSCADO: STRING; VAR X:T_DATO_T;);
-VAR
-    DIR,ANT:T_PUNTERO;
-BEGIN
-    IF L.CAB^.INFO.N_CONT = BUSCADO THEN
+    PROCEDURE RECUPERAR (L:T_LISTA; VAR E:T);
     BEGIN
-        X:= L.CAB^.INFO;
-        DIR:= L.CAB;
-        L. CAB:=DIR^.SIG;
-        DISPOSE (DIR);
+        E:= L^.INFO;
     END;
-    ELSE
+
+    PROCEDURE BUSCAR (L:T_LISTA; BUSCADO:STRING[50] ;VAR ENC:BOOLEAN);
+    VAR
+        E:T_DATO_T;
     BEGIN
-        ANT:= L.CAB;
-        L.ACT:= L.CAB^.SIG;
-        WHILE (L.ACT^.INFO.N_CONT < X.N_CONT) DO
+        PRIMERO(L);
+        WHILE NOT FIN(L) AND (NOT ENC) DO
         BEGIN
-            ANT:= L.ACT;
-            L.ACT:= L.ACT^.SIG
+            RECUPERAR(L,E);
+            IF E.N_CONT = BUSCADO THEN 
+                ENC:=TRUE
+            ELSE 
+                SIGUIENTE (L);
         END;
-        X:= L.ACT^.INFO;
-        ANT^.SIG:= L.ACT^.SIG;
-        DISPOSE (L.ACT);
     END;
-    DEC(L.TAM)
-END;
 
-PROCEDURE PRIMERO (L:T_LISTA);
-BEGIN
-    L.ACT = L.CAB;
-END;
-
-PROCEDURE FIN (L:T_LISTA): BOOLEAN;
-BEGIN
-    FIN:= L.ACT = NIL;
-END;
-
-FUNCTION LISTA_LLENA (VAR L:T_LISTA): BOOLEAN;
-BEGIN
-    LISTA_LLENA:= GETHEAPSTATUS.TotalFree < SIZEOF(T_NODO) ;
-END;
-
-FUNCTION LISTA_VACIA (VAR L:T_LISTA): BOOLEAN;
-BEGIN
-    LISTA_VACIA:= L.TAM=0;
-END;
-
-PROCEDURE RECUPERAR (L:T_LISTA; VAR E:T);
-BEGIN
-    E:= L^.INFO;
-END;
-
-PROCEDURE BUSCAR (L:T_LISTA; BUSCADO:STRING[50] ;VAR ENC:BOOLEAN);
-VAR
-    E:T_DATO_T;
-BEGIN
-    PRIMERO(L);
-    WHILE NOT FIN(L) AND (NOT ENC) DO
+    PROCEDURE AGREGAR_ZONA(VAR L:T_LISTA; X:T_DATO_T);
+    VAR DIR, ANT : T_PUNT;
     BEGIN
-        RECUPERAR(L,E);
-        IF E.N_CONT = BUSCADO THEN 
-            ENC:=TRUE
-        ELSE 
-            SIGUIENTE (L);
+        NEW (DIR);
+        DIR^.INFO:= X;
+        IF (L.CAB= NIL) OR ((L.CAB^.INFO.ZONA) < (X.ZONA)) THEN
+        BEGIN
+            DIR^.SIG:= L.CAB;
+            L.CAB:= DIR;
+        END
+        ELSE
+        BEGIN
+            ANT:= L.CAB;
+            L.ACT:= L.CAB^.SIG;
+            WHILE (L.ACT <> NIL) AND ((L.ACT^.INFO.ZONA) < (X.ZONA)) DO
+            BEGIN
+                ANT:= L.ACT;
+                L.ACT:= L.ACT^.SIG
+            END;
+            DIR^.SIG:= L.ACT;
+            ANT^.SIG:= DIR;
+        END;
+        INC(L.TAM)
     END;
-END;
+
+    PROCEDURE AGREGAR_FECHA(VAR L:T_LISTA; X:T_DATO_T);
+    VAR DIR, ANT : T_PUNT;
+    BEGIN
+        NEW (DIR);
+        DIR^.INFO:= X;
+        IF (L.CAB= NIL) OR ((L.CAB^.INFO.F_INC) < (X.F_INC)) THEN
+        BEGIN
+            DIR^.SIG:= L.CAB;
+            L.CAB:= DIR;
+        END
+        ELSE
+        BEGIN
+            ANT:= L.CAB;
+            L.ACT:= L.CAB^.SIG;
+            WHILE (L.ACT <> NIL) AND ((L.ACT^.INFO.F_INC) < (X.F_INC)) DO
+            BEGIN
+                ANT:= L.ACT;
+                L.ACT:= L.ACT^.SIG
+            END;
+            DIR^.SIG:= L.ACT;
+            ANT^.SIG:= DIR;
+        END;
+        INC(L.TAM)
+    END;
 
 
-end;
+end.

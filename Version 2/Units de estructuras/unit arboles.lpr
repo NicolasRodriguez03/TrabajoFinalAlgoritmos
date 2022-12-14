@@ -19,6 +19,7 @@ interface
     FUNCTION ARBOL_LLENO (ARBOL:T_PUNT): BOOLEAN;
     PROCEDURE CREAR_ARBOL (VAR ARBOL: T_PUNT);
     PROCEDURE AGREGAR_ARBOL (VAR ARBOL: T_PUNT, X:T_DATO_ARBOL);
+    procedure suprime (var raiz:t_punt; x:t_dato);
 
 implementation
 
@@ -55,7 +56,26 @@ implementation
         end;
     END;
 
-
+procedure suprime (var raiz:t_punt; x:t_dato);
+ begin
+ if raiz <> nil then
+    if x < raiz^.info then
+        suprime (raiz^.sai,x);
+    else
+        if x < raiz^.info then
+        suprime (raiz^.sad,x);
+    else
+        if (raiz^.sai = nil) and (raiz^.sad = nil) then
+        raiz:= nil;
+        else
+            if (raiz^.sai = nil) then
+             raiz:= raiz^.sad;
+            else
+                if (raiz^.sad = nil) then
+                raiz:= raiz^.sai;
+                else
+                    raiz^.info:= suprime_min (raiz^.sad);
+ end;
 
 
 end.

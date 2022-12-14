@@ -1,17 +1,16 @@
 unit menu_listados_ordenados;
 
 interface
-uses listados_ordenados;
-
-procedure mostrar_listados
+uses listados_ordenados, CRT;
+procedure menu_listados_ordenados();
 
 implementation
 
-procedure mV
+procedure menu_listados_ordenados();
 var resp: string;
 begin 
     Writeln ('1) Mostrar Ordenado por apellido y nombre');
-    Writeln ('2) Mostrar Ordenado por fecha de inscripcion');
+    Writeln ('2) Mostrar Ordenado por fecha de inscripcion en un año determinado');
     Writeln ('3) Mostrar Ordenado por zona');
     Writeln ('4) Impresion de comprobante');
         Readln (resp);

@@ -1,13 +1,13 @@
-unit ;
+unit MENU_PRINCIPAL ;
 
 interface
 uses
- menu_contribuyentes;
- menu_estadisticas;
- menu_listados_ordenados;
- menu_terrenos;
+ menu_contribuyentes,
+ menu_estadisticas,
+ menu_listados_ordenados,
+ menu_terrenos, CRT;
 
-type
+PROCEDURE MENU();
 
 implementation
   PROCEDURE MENU();
