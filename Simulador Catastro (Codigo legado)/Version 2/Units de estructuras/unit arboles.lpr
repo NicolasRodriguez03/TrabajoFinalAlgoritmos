@@ -1,5 +1,4 @@
 unit ARBOLES;
-uses contribuyente;
 
 Type
 	T_DATO_ARBOL= RECORD			// Registro del nodo de busqueda, almacena el dato clave a buscar, y la posición dentro del archivo
@@ -7,9 +6,9 @@ Type
 		CLAVE: STRING [100];
 	end;
 
-	T_PUNT= ^T_NODO;		// Puntero de los nodos de busqueda
+	T_PUNT_A= ^T_NODO;		// Puntero de los nodos de busqueda
 
-	T_NODO=  RECORD			// Nodo de busqueda
+	T_NODO_A=  RECORD			// Nodo de busqueda
 		INFO:T_DATO_ARBOL ;
 		H_I,H_D: T_PUNT;
 	END;

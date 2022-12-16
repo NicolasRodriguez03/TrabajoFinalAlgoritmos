@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="C:\lazarus\fpc\3.2.2\bin\x86_64-win64\fpc.exe" Date="1420791944"/>
+  <Params Value=" -MObjFPC -Scghi -O1 -gw2 -godwarfsets -gl -l -vewnhibq -FiC:\Users\Standard\Documents\FinalAlgoritmos\lib\x86_64-win64 &quot;-FuC:\Users\Standard\Documents\FinalAlgoritmos\Units\Estructuras y definicion de datos&quot; &quot;-FuC:\Users\Standard\Documents\FinalAlgoritmos\Units\Manejo de estructuras&quot; &quot;-FuC:\Users\Standard\Documents\FinalAlgoritmos\Units\Funciones miscelaneas&quot; -FuC:\Users\Standard\Documents\FinalAlgoritmos\Units\Menus -FuC:\Users\Standard\Documents\FinalAlgoritmos\ -FUC:\Users\Standard\Documents\FinalAlgoritmos\lib\x86_64-win64\ -FEC:\Users\Standard\Documents\FinalAlgoritmos\ -oC:\Users\Standard\Documents\FinalAlgoritmos\project1.exe project1.lpr"/>
+</CONFIG>

@@ -35,7 +35,6 @@ implementation
         Writeln ('¿Que dato desea modificar? (Ingrese nro. de dato o ingrese 0 para volver al menu)');
         Readln (OP);
         CASE OP OF
-            0: // ACA VA EL PROCEDIMIENTO DE LMENU
             1: Writeln ('Desea modificar nro. de contribuyente? (SI/NO)');
             Readln (OP_2);
             IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then

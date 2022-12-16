@@ -2,7 +2,6 @@ unit lista;
     
 
 interface
-USES definicion_datos;
     PROCEDURE CREARLISTA (VAR L:T_LISTA);
     FUNCTION LISTA_LLENA (VAR L:T_LISTA): BOOLEAN;
     FUNCTION LISTA_VACIA (VAR L:T_LISTA): BOOLEAN;

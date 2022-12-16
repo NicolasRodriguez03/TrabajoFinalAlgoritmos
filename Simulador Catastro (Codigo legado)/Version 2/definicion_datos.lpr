@@ -1,10 +1,6 @@
 unit definicion_datos;
 
 interface
-uses
-    lista_terreno;
-	ARBOLES;
-
 
 const
     ruta_terr='C:\TrabajoFinal\Terrenos.dat';
