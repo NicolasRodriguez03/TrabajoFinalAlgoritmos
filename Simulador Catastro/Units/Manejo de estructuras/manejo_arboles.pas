@@ -13,7 +13,7 @@ interface
   PROCEDURE ELIMINA_NODO(ARBOL:T_PUNT_A;BUSCADO:STRING);
 
 implementation
-    procedure leer_clave(var x:string; var clave:string);
+    procedure leer_clave(var x:string; var clave:string); // Lee la clave y el tipo al que pertenece
     begin
     Writeln ('Desea por apellido y nombre, o por DNI? (Ingresar "Apellido y nombre" o "DNI")');
     Readln (x);
@@ -21,9 +21,7 @@ implementation
     Readln (CLAVE);
     end;
 
-
-
-PROCEDURE MUESTRA_DATOS (VAR ARCH_C:ARCHIVO_C; ARBOL: T_PUNT_A);
+PROCEDURE MUESTRA_DATOS (VAR ARCH_C:ARCHIVO_C; ARBOL: T_PUNT_A);  // Muestra los datos del archivo en la posicion contenida por nodo de arbol dado
 VAR
   X:WORD;
 BEGIN
@@ -31,7 +29,7 @@ X:= ARBOL^.INFO.POS_ARCH;
 MOSTRAR_DATOS_C(arch_c,x);
 END;
 
-FUNCTION PREORDEN(ARBOL:T_PUNT_A; BUSCADO:STRING):T_PUNT_A;
+FUNCTION PREORDEN(ARBOL:T_PUNT_A; BUSCADO:STRING):T_PUNT_A; // Realiza una busqueda preorden, se usa en el arbol de apellido y nombre
 BEGIN
 IF (ARBOL = NIL) THEN PREORDEN := NIL
 ELSE
@@ -43,7 +41,7 @@ ELSE
     PREORDEN := PREORDEN(ARBOL^.H_D,BUSCADO)
 END;
 
-PROCEDURE CONSULTA(VAR ARBOL:T_PUNT_A; var pos:CARDINAL; CLAVE:STRING);
+PROCEDURE CONSULTA(VAR ARBOL:T_PUNT_A; var pos:CARDINAL; CLAVE:STRING); // Realiza una busqueda por preorden y devuelve la posicion en el archivo
 VAR
   AUX:T_PUNT_A;
 begin
@@ -53,7 +51,7 @@ begin
     POS:= AUX^.INFO.POS_ARCH;
   end;
 
-PROCEDURE BUSCAR (ARBOL:T_PUNT_A; VAR POS:CARDINAL);
+PROCEDURE BUSCAR (ARBOL:T_PUNT_A; VAR POS:CARDINAL);  // Es el comando que se usa cuando se invoca cuando se quiere realizar la consulta
 VAR CLAVE,X:STRING;
 BEGIN
  ClrScr;
@@ -64,7 +62,7 @@ BEGIN
   CONSULTA(ARBOL,POS,CLAVE);
  end;
 
-PROCEDURE AGREGAR (VAR ARBOL:T_PUNT_A; X:T_DATO_ARBOL);
+PROCEDURE AGREGAR (VAR ARBOL:T_PUNT_A; X:T_DATO_ARBOL); // Agrega un record de dato_arbol al arbol dado, si no existe lo genera
 BEGIN
 IF ARBOL = NIL THEN
 BEGIN
@@ -80,7 +78,7 @@ AGREGAR (ARBOL^.H_D,X)
 END;
 
 
-PROCEDURE SUPRIMIR_NODO (VAR ARBOL:T_PUNT_A);
+PROCEDURE SUPRIMIR_NODO (VAR ARBOL:T_PUNT_A); // 
 VAR
  ANT, TEMP: T_PUNT_A;
 BEGIN
@@ -108,7 +106,7 @@ BEGIN
     DISPOSE (TEMP);
 end;
 
-PROCEDURE ELIMINA_NODO(ARBOL:T_PUNT_A;BUSCADO:STRING);
+PROCEDURE ELIMINA_NODO(ARBOL:T_PUNT_A;BUSCADO:STRING);  //
 VAR
   ARBOL1:T_PUNT_A;
 BEGIN

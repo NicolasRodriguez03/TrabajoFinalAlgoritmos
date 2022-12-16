@@ -12,7 +12,7 @@ FUNCTION PORC_TIPO(Var ARCH_T:ARCHIVO_T; X:BYTE):REAL;
 FUNCTION PROP_MP (VAR ARCH_C: ARCHIVO_C; VAR ARCH_T: ARCHIVO_T ):REAL;
 
 implementation
-    FUNCTION CONVERTIR_FECHA(X:STRING):INTEGER;
+    FUNCTION CONVERTIR_FECHA(X:STRING):INTEGER; // Convierte las fechas de formato DD/MM/AAAA a n° de dias
     var d,m,a:integer;
     begin
       D:= STRTOINT(COPY(X,1,2));
@@ -21,7 +21,7 @@ implementation
       CONVERTIR_FECHA:= ((A*365)+(M*30)+D);
     end;
 
-  FUNCTION cant_ins(VAR ARCH_t:ARCHIVO_t):INTEGER;
+  FUNCTION cant_ins(VAR ARCH_t:ARCHIVO_t):INTEGER;  // Devuelve el n° de terrenos inscriptos entre 2 fechas
     var
         f_in,f_fin:String[10];
         C:INTEGER; i:cardinal;
@@ -45,7 +45,7 @@ implementation
       cant_ins:=C;
     end;
 
-    FUNCTION PORC_TIPO(Var ARCH_T:ARCHIVO_T; X:BYTE):REAL;
+    FUNCTION PORC_TIPO(Var ARCH_T:ARCHIVO_T; X:BYTE):REAL;  // Devuelve el porcentaje de terrenos que pertenecen al tipo dado
     VAR
         TOTAL,C,I:INTEGER; REG:T_DATO_T;
     begin
@@ -60,7 +60,7 @@ implementation
       PORC_TIPO:=((C*100)/TOTAL);
     end;
 
-    function Cant_baja(var ARCH_C:ARCHIVO_C):REAL;
+    function Cant_baja(var ARCH_C:ARCHIVO_C):REAL;  // Devuelve el porcentaje de contribuyentes que están dados de baja
     VAR
         TOTAL, C:INTEGER;     C1,I:CARDINAL;
         X:DATOS_CONT;
@@ -78,7 +78,7 @@ implementation
     end;
 
 
-   FUNCTION PROP_MP (VAR ARCH_C: ARCHIVO_C; VAR ARCH_T: ARCHIVO_T ):REAL;
+   FUNCTION PROP_MP (VAR ARCH_C: ARCHIVO_C; VAR ARCH_T: ARCHIVO_T ):REAL; // Devuelve el porcentaje de contribuyentes con mas de una propiedad
    VAR C,J,TOTAL,TOTAL_MP:INTEGER;     I,C1:CARDINAL;
         X:DATOS_CONT;
         X_1:T_DATO_T;
