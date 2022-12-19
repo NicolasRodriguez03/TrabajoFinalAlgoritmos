@@ -21,7 +21,7 @@ implementation
       CONVERTIR_FECHA:= ((A*365)+(M*30)+D);
     end;
 
-  FUNCTION cant_ins(VAR ARCH_t:ARCHIVO_t; ):INTEGER;  // Devuelve el n° de terrenos inscriptos entre 2 fechas
+  FUNCTION cant_ins(VAR ARCH_t:ARCHIVO_t):INTEGER;  // Devuelve el n° de terrenos inscriptos entre 2 fechas
     var
         f_in,f_fin:String[10];
         C:INTEGER; i:LongInt;
