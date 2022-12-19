@@ -36,12 +36,12 @@ implementation
       Readln (F_FIN);
       F2:= CONVERTIR_FECHA(F_FIN) ;
       FOR I:=0 TO (FILESIZE(ARCH_T)-1) DO
-      begin
+        begin
         LEER_DATO_t(ARCH_t,I,X);
         F3:= CONVERTIR_FECHA(X.f_inc);
         IF (F3>=F1) AND (F3<=F2) THEN
-        C:=C+1;
-      end;
+          C:=C+1;
+        end;
       cant_ins:=C;
     end;
 
