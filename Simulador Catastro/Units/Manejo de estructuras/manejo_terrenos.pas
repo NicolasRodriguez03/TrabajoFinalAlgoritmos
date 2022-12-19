@@ -28,7 +28,7 @@ implementation
             AUX_3: REAL;
         begin
         LEER_DATO_T(ARCH_T, POS, DATO);
-        Writeln ('Que dato desea modificar? (Ingrese nro. de dato o ingrese 0 para volver al menu)');
+        Writeln ('Que dato desea modificar? (Ingrese nro. de dato o ingrese cualquier otra tecla para volver al menu)');
         Readln (OP);
         CASE (OP) OF
 
@@ -145,7 +145,7 @@ implementation
         MOSTRAR_DATOS_T(ARCH_T, POS);
     END;
 
-    procedure BAJA_CONT_TER (VAR ARCH_T:ARCHIVO_T; X:STRING);
+    procedure BAJA_CONT_TER (VAR ARCH_T:ARCHIVO_T; X:STRING); //ELIMINA TODOS LOS N_CONT QUE LE PERTENEZCAN 
     Var I:longint; TEMP: T_DATO_T;
     BEGIN
         FOR I:=0 TO (FILESIZE(ARCH_T)-1) DO
@@ -153,13 +153,13 @@ implementation
             LEER_DATO_T(ARCH_T,I,TEMP);
             IF TEMP.N_CONT=X THEN
             BEGIN
-                TEMP.N_CONT:=('');
-                WRITE(ARCH_T,TEMP);
+                TEMP.N_CONT:=('-');
+                GUARDAR_DATO_T(arch_t, I, TEMP)
             END;
         end;
     end;
 
-    procedure BAJA_TERRENO (VAR ARCH_T:ARCHIVO_T; POS:longint);
+    procedure BAJA_TERRENO (VAR ARCH_T:ARCHIVO_T; POS:longint); //modificar eliminando
     Var REG:T_DATO_T;
         OP:BYTE;        // VER SI PODEMOS CAMBIAR A STRING
     BEGIN
@@ -169,7 +169,7 @@ implementation
         IF (OP=1) then
         BEGIN
             LEER_DATO_T(ARCH_T, POS, REG);
-            REG.N_CONT:=('');
+            REG.N_CONT:=('-');
             GUARDAR_DATO_T(ARCH_T, POS, REG);
             WRITELN('La baja del terreno ', REG.N_MENS, ' ha sido exitosa, presione cualquier tecla para volver al menu principal');
             readkey;

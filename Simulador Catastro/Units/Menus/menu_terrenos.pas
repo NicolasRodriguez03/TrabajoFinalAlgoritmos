@@ -20,7 +20,7 @@ begin
     ClrScr;
     Writeln('MENU DE TERRENOS');
     Writeln ('1) Baja');
-    Writeln ('2) Modificacion');
+    Writeln (Utf8ToAnsi('2) Modificación'));
     Writeln ('3) Consulta');
     READ (OP);
     If OP='1' then
@@ -37,7 +37,7 @@ begin
                 readkey;
                 end
             else
-                Writeln ('Ingrese un valor valido')
+                Writeln (Utf8ToAnsi('Ingrese un valor válido'))
             end;
         end;
 end

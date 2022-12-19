@@ -14,9 +14,9 @@ interface
 implementation
     procedure leer_clave(var x:string; var clave:string); // Lee la clave y el tipo al que pertenece
     begin
-      Writeln ('Desea por apellido y nombre, o por DNI? (Ingresar "Apellido y nombre" o "DNI")');
+      Writeln ('Desea por apellido y nombre, o por DNI? (Ingresar "nombre" o "DNI")');
       Readln (x);
-      Writeln ('Ingrese su clave de busqueda');
+      Writeln (Utf8ToAnsi('Ingrese su clave de búsqueda'));
       Readln (CLAVE);
     end;
 

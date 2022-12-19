@@ -19,7 +19,7 @@ implementation
   Writeln ('1) Manejo de Contribuyentes');
   Writeln ('2) Manejo de Terrenos');
   Writeln ('3) Listados Ordenados e Impresion');
-  Writeln ('4) Estadisticas');
+  Writeln (Utf8ToAnsi('4) Estadísticas'));
   Readln (resp);
   case (resp) OF
      1: begin

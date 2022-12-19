@@ -25,7 +25,7 @@ implementation
       POS:=FILESIZE(ARCH_C);
       GUARDA_DATO_C (ARCH_C,POS,R);
     //  close(arch_c);
-      AUX_X.CLAVE:= CONCAT(R.APELLIDO, R.NOMBRE);
+      AUX_X.CLAVE:= CONCAT(R.APELLIDO, ' ', R.NOMBRE);
       AUX_Y.CLAVE:= (R.DNI);
       AUX_X.POS_ARCH:= POS;
       AUX_Y.POS_ARCH:= POS;
@@ -42,7 +42,7 @@ implementation
       FOR I:=0 TO (FILESIZE(ARCH_C)-1) DO 
         BEGIN
         LEER_DATO_C(ARCH_C,C,R);
-        AUX_X.CLAVE:= CONCAT(R.APELLIDO, R.NOMBRE);
+        AUX_X.CLAVE:= CONCAT(R.APELLIDO, ' ', R.NOMBRE);
         AUX_Y.CLAVE:= (R.DNI);
         AUX_X.POS_ARCH:= I;
         AUX_Y.POS_ARCH:= I;
@@ -201,18 +201,19 @@ implementation
 
     PROCEDURE BAJA(VAR ARCH_C:ARCHIVO_C; POS:LongInt);
     VAR
-        OP:STRING; reg:DATOS_CONT; X:STRING[8];
+        OP,aux:STRING; reg:DATOS_CONT; X:STRING[8];
     begin
       MOSTRAR_DATOS_C(ARCH_C, POS);
-      Writeln('Desea dar de baja a este contribuyente? (si/no)');
+      Writeln('Desea dar de baja a este contribuyente? (1:si/0:no)');
+      readln(aux); // esto esta porque parece que hay un bug de Tpascal que a veces se saltea algun que otro readln
       Readln (OP);
       IF (OP='SI') OR (OP='Si') or (OP='si') then
       begin
-        READ(ARCH_C, REG);
+        LEER_DATO_C(ARCH_C, POS, REG);
         REG.ESTADO:= FALSE;
-        WRITE(ARCH_C,REG);
-        X:=REG.N_CONT;
-        BAJA_CONT_TER ( ARCH_T, X);
+        X:= REG.N_CONT;
+        GUARDA_DATO_C(ARCH_C, POS, REG);
+        BAJA_CONT_TER (ARCH_T, X);
       end;
     end;
 
@@ -245,7 +246,7 @@ PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT_A);      // ANT
        WHILE NOT(EOF(ARCH_C)) DO
        begin
            LEER_DATO_c(ARCH_C,POS,AUX);
-           AUX_X.CLAVE:= CONCAT(AUX.APELLIDO, AUX.NOMBRE);
+           AUX_X.CLAVE:= CONCAT(AUX.APELLIDO, ' ', AUX.NOMBRE);
            AUX_X.POS_ARCH:= POS;
            AGREGAR_ARBOL(ARBOL, AUX_X);
            POS:= POS+1;
