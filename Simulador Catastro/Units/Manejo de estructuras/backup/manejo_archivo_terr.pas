@@ -10,6 +10,9 @@ interface
     PROCEDURE CARGAR_T(VAR X: T_DATO_T);
     procedure busqueda_archivo_mens (VAR ARCH_T: archivo_t; x:string; var pos:CARDINAL);
     PROCEDURE AVALUAR(VAR X:T_DATO_T);
+const
+    ruta_terr='C:\Users\Standard\Downloads\Simulador Catastro\Archivos\Terrenos.dat';
+    ruta_cont='CC:\Users\Standard\Downloads\Simulador Catastro\Archivos\Contribuyentes.dat';
 
 
 implementation

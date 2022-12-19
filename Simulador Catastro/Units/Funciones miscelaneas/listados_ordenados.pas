@@ -8,19 +8,19 @@ interface
 
 
 PROCEDURE GENERAR_LISTA_ZONA(VAR L:T_LISTA; VAR ARCH_T:ARCHIVO_T);
-PROCEDURE listado_ordenado_ayn(VAR ARCH_C:ARCHIVO_C; VAR ARCH_T:ARCHIVO_T; VAR ARBOL:T_PUNT_A; J:CARDINAL);
+PROCEDURE listado_ordenado_ayn(VAR ARCH_C:ARCHIVO_C; VAR ARCH_T:ARCHIVO_T; VAR ARBOL:T_PUNT_A; J:LongInt);
 PROCEDURE LISTADO_FECHA(VAR ARCH_T:ARCHIVO_T);
 PROCEDURE LISTADO_ZONA(VAR ARCH_T:ARCHIVO_T);
 PROCEDURE GENERAR_LISTA_FECHA(VAR L: T_LISTA; VAR ARCH_T:ARCHIVO_T);
 PROCEDURE FILA_P_AYN ();
 PROCEDURE FILA_P_FECHA();
 PROCEDURE FILA_P_ZONA ();
-PROCEDURE comprobante(ARBOL:t_punt_A; var arch_c:ARCHIVO_C; var arch_t:archivo_t; POS:CARDINAL);
+PROCEDURE comprobante(ARBOL:t_punt_A; var arch_c:ARCHIVO_C; var arch_t:archivo_t; POS:LongInt);
 
 implementation
     PROCEDURE GENERAR_LISTA_ZONA(VAR L:T_LISTA; VAR ARCH_T:ARCHIVO_T);
     VAR
-        I:CARDINAL;  DATO:T_DATO_T;
+        I:LongInt;  DATO:T_DATO_T;
     begin
     CREARLISTA(L);
       For I:=0 TO (FILESIZE(ARCH_T)-1) DO
@@ -31,7 +31,7 @@ implementation
 
     PROCEDURE GENERAR_LISTA_FECHA(VAR L: T_LISTA; VAR ARCH_T:ARCHIVO_T);
     VAR
-        I:CARDINAL;  DATO:T_DATO_T;
+        I:LongInt;  DATO:T_DATO_T;
     begin
     CREARLISTA(L);
       For I:=0 TO (FILESIZE(ARCH_T)-1) DO
@@ -97,8 +97,8 @@ implementation
         END;
     END;
 
-    PROCEDURE listado_ordenado_ayn(VAR ARCH_C:ARCHIVO_C; VAR ARCH_T:ARCHIVO_T; VAR ARBOL:T_PUNT_A; J:CARDINAL);
-    var I:CARDINAL; x:string[8]; dato:T_DATO_T;
+    PROCEDURE listado_ordenado_ayn(VAR ARCH_C:ARCHIVO_C; VAR ARCH_T:ARCHIVO_T; VAR ARBOL:T_PUNT_A; J:LongInt);
+    var I:LongInt; x:string[8]; dato:T_DATO_T;
     BEGIN
     IF ARBOL <> NIL THEN BEGIN
         listado_ordenado_ayn(ARCH_C, ARCH_T, ARBOL^.H_I, J);
@@ -161,8 +161,8 @@ implementation
     write ('VALOR');
     END;
 
-    PROCEDURE comprobante(ARBOL:t_punt_A; var arch_c:ARCHIVO_C; var arch_t:archivo_t; POS:CARDINAL);
-    VAR DATO:DATOS_CONT; X:T_DATO_T; J:INTEGER; I:CARDINAL;
+    PROCEDURE comprobante(ARBOL:t_punt_A; var arch_c:ARCHIVO_C; var arch_t:archivo_t; POS:LongInt);
+    VAR DATO:DATOS_CONT; X:T_DATO_T; J:INTEGER; I:LongInt;
     begin
     BUSCAR(ARBOL,POS);
     LEER_DATO_C(ARCH_C,POS, DATO);

@@ -2,7 +2,7 @@ unit Arboles;
 interface
 Type
 	T_DATO_ARBOL= RECORD			// Registro del nodo de busqueda, almacena el dato clave a buscar, y la posición dentro del archivo
-		POS_ARCH:CARDINAL;
+		POS_ARCH:LongInt;
 		CLAVE: STRING [100];
 	end;
 
@@ -12,7 +12,7 @@ Type
 		INFO:T_DATO_ARBOL ;
 		H_I,H_D: T_PUNT_A;
 	END;
-VAR ARBOL_AYN, ARBOL_DNI:T_PUNT_A;
+
 
     FUNCTION ARBOL_VACIO (ARBOL:T_PUNT_A): BOOLEAN;
     FUNCTION ARBOL_LLENO (ARBOL:T_PUNT_A): BOOLEAN;

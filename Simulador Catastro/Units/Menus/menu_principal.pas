@@ -14,36 +14,34 @@ implementation
   var
     resp:BYTE;
   begin
-Clrscr;
-    Writeln ('Bienvenido!');
-    Writeln ('1) Manejo de Contribuyentes');
-    Writeln ('2) Manejo de Terrenos');
-    Writeln ('3) Listados Ordenados e Impresion');
-    Writeln ('4) Estadisticas');
-    Readln (resp);
-
-    case (resp) OF
+  Clrscr;
+  Writeln ('MENU PRINCIPAL');
+  Writeln ('1) Manejo de Contribuyentes');
+  Writeln ('2) Manejo de Terrenos');
+  Writeln ('3) Listados Ordenados e Impresion');
+  Writeln ('4) Estadisticas');
+  Readln (resp);
+  case (resp) OF
      1: begin
-          M_CONTRIBUYENTES();
-          MENU();
+        M_CONTRIBUYENTES();
+        MENU();
         end;
 
      2: begin
-          m_terrenos();
-          MENU();
+        m_terrenos();
+        MENU();
         end;
 
      3: begin
-          MENU_listados();
-          MENU();
+        MENU_listados();
+        MENU();
         end;
 
      4: begin
-          M_ESTADISTICAS;
-          MENU();
+        M_ESTADISTICAS;
+        MENU();
         end;
-
-    END;
+     END;
   END;
 
 END.

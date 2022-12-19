@@ -8,7 +8,7 @@ manejo_contribuyentes, manejo_archivo_TERR, manejo_archivo_CONT;
 FUNCTION CONVERTIR_FECHA(X:STRING):INTEGER;
 FUNCTION cant_ins(VAR ARCH_t:ARCHIVO_t):INTEGER;
 FUNCTION PORC_TIPO(Var ARCH_T:ARCHIVO_T; X:BYTE):REAL;
- function Cant_baja(var ARCH_C:ARCHIVO_C):REAL;
+function Cant_baja(var ARCH_C:ARCHIVO_C):REAL;
 FUNCTION PROP_MP (VAR ARCH_C: ARCHIVO_C; VAR ARCH_T: ARCHIVO_T ):REAL;
 
 implementation
@@ -24,7 +24,7 @@ implementation
   FUNCTION cant_ins(VAR ARCH_t:ARCHIVO_t):INTEGER;  // Devuelve el n° de terrenos inscriptos entre 2 fechas
     var
         f_in,f_fin:String[10];
-        C:INTEGER; i:cardinal;
+        C:INTEGER; i:LongInt;
         X:t_dato_t;
         F1,F2,F3: INTEGER;
     begin
@@ -57,12 +57,15 @@ implementation
         IF REG.TIPO_E = X THEN
             C:=C+1;
       END;
-      PORC_TIPO:=((C*100)/TOTAL);
+      If TOTAL <> 0 THEN
+        PORC_TIPO:=((C*100)/TOTAL)
+      ELSE
+        PORC_TIPO:= 0;
     end;
 
     function Cant_baja(var ARCH_C:ARCHIVO_C):REAL;  // Devuelve el porcentaje de contribuyentes que están dados de baja
     VAR
-        TOTAL, C:INTEGER;     C1,I:CARDINAL;
+        TOTAL, C:INTEGER;     C1,I:LongInt;
         X:DATOS_CONT;
     begin
       C:=0 ;  I:=0;
@@ -74,12 +77,15 @@ implementation
         IF X.ESTADO=FALSE THEN
         C:=C+1;
       end ;
-      Cant_baja:=((C*100)/TOTAL);
+      If TOTAL <> 0 THEN
+        Cant_baja:=((C*100)/TOTAL)
+      ELSE
+        Cant_baja:= 0;
     end;
 
 
    FUNCTION PROP_MP (VAR ARCH_C: ARCHIVO_C; VAR ARCH_T: ARCHIVO_T ):REAL; // Devuelve el porcentaje de contribuyentes con mas de una propiedad
-   VAR C,J,TOTAL,TOTAL_MP:INTEGER;     I,C1:CARDINAL;
+   VAR C,J,TOTAL,TOTAL_MP:INTEGER;     I,C1:LongInt;
         X:DATOS_CONT;
         X_1:T_DATO_T;
    BEGIN
@@ -105,7 +111,10 @@ implementation
       IF C=2 THEN
         TOTAL_MP:= TOTAL_MP+1;
     END;
-    PROP_MP:=((TOTAL_MP*100)/TOTAL);
+    If TOTAL <> 0 THEN
+      PROP_MP:= ((TOTAL_MP*100)/TOTAL)
+    ELSE
+      PROP_MP:= 0;
   END;
 end.
 

@@ -1,22 +1,22 @@
 unit manejo_archivo_cont;
 
 interface
-    uses definicion_datos;
+    uses definicion_datos, sysutils;
     Procedure crear_abrir_C(var ARCH_C:ARCHIVO_C);
     PROCEDURE CARGAR_CONT(VAR X: DATOS_CONT);
-    PROCEDURE LEER_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:CARDINAL; REG:DATOS_CONT);
-    PROCEDURE GUARDA_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:CARDINAL; REG:DATOS_CONT);
-    PROCEDURE MOSTRAR_DATOS_C(VAR ARCH_C: ARCHIVO_C; POS:CARDINAL);
-    FUNCTION OBTENER_N_CONT (VAR ARCH_C:ARCHIVO_C; POS: CARDINAL):STRING;
+    PROCEDURE LEER_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:LongInt; VAR REG:DATOS_CONT);
+    PROCEDURE GUARDA_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:LongInt; REG:DATOS_CONT);
+    PROCEDURE MOSTRAR_DATOS_C(VAR ARCH_C: ARCHIVO_C; POS:LongInt);
+    FUNCTION OBTENER_N_CONT (VAR ARCH_C:ARCHIVO_C; POS: LongInt):STRING;
 
 
 implementation
     Procedure crear_abrir_C(var ARCH_C:ARCHIVO_C);
     begin
     assign(ARCH_C, ruta_cont);
-    {$i-}
+    {$I-}
     reset(ARCH_C);
-    {$i+}
+    {$I+}
     if ioresult <> 0 then
         rewrite(ARCH_C);
     end;
@@ -26,65 +26,65 @@ implementation
     BEGIN
         with (X) do
         begin
-            Writeln ('Ingrese numero de contribuyente:');
+            Writeln ('Ingrese numero de contribuyente');
             Readln(N_CONT);
-            Writeln ('Ingrese Apellido:');
+            Writeln ('Ingrese Apellido');
             Readln (APELLIDO);
-            Writeln ('Ingrese nombre:');
+            Writeln ('Ingrese nombre');
             Readln (nombre);
-            Writeln ('Ingrese direccion:');
+            Writeln ('Ingrese direccion');
             Readln (DIREC);
             Writeln ('Ingrese ciudad');
             Readln (ciudad);
-            Writeln ('Ingrese DNI:');
+            Writeln ('Ingrese DNI');
             Readln (DNI);
-            Writeln ('Ingrese fecha de nacimiento:');
+            Writeln ('Ingrese fecha de nacimiento');
             Readln (F_NAC);
-            Writeln ('Ingrese telefono:');
+            Writeln ('Ingrese telefono');
             Readln (TEL);
-            Writeln ('Ingrese mail:');
+            Writeln ('Ingrese mail');
             Readln (mail);
         end;
     END;
 
-    PROCEDURE LEER_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:CARDINAL; REG:DATOS_CONT);
+    PROCEDURE LEER_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:LongInt; VAR REG:DATOS_CONT);
     BEGIN
-        crear_abrir_C(ARCH_C);
+        //crear_abrir_C(ARCH_C);
         SEEK(ARCH_C, POS);
         READ(ARCH_C, REG);
     END;
 
-    PROCEDURE GUARDA_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:CARDINAL; REG:DATOS_CONT);
+    PROCEDURE GUARDA_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:LongInt; REG:DATOS_CONT);
     BEGIN
-        crear_abrir_C(ARCH_C);
+        //crear_abrir_C(ARCH_C);
         SEEK(ARCH_C, POS);
         WRITE(ARCH_C, REG);
     END;
 
-    PROCEDURE MOSTRAR_DATOS_C(VAR ARCH_C: ARCHIVO_C; POS:CARDINAL);
+    PROCEDURE MOSTRAR_DATOS_C(VAR ARCH_C: ARCHIVO_C; POS:LongInt);
     VAR DATO:DATOS_CONT;
     BEGIN
     LEER_DATO_C(ARCH_C,POS, DATO);
     WITH (DATO) DO
     BEGIN
-    Writeln ('1) NUMERO DE CONTRIBUYENTE: ',N_CONT );
-    Writeln ('2) NOMBRE: ', NOMBRE);
-    Writeln ('3) APELLIDO: ',APELLIDO);
-    Writeln ('4) Direccion: ', DIREC);
-    Writeln ('5) Ciudad: ',ciudad);
-    Writeln ('6) DNI: ', DNI);
-    Writeln ('7) Nacimiento: ', F_NAC);
-    Writeln ('8) Telefono: ', TEL);
-    Writeln ('9) Mail: ', MAIL);
-    Writeln ('10) ESTADO: ');
-    IF ESTADO=TRUE THEN
-        Write ('ACTIVO')
-           else
-        Write ('INACTIVO')
-    END;
+        Writeln ('1) NUMERO DE CONTRIBUYENTE: ',N_CONT );
+        Writeln ('2) NOMBRE: ', NOMBRE);
+        Writeln ('3) APELLIDO: ',APELLIDO);
+        Writeln ('4) Direccion: ', DIREC);
+        Writeln ('5) Ciudad: ',ciudad);
+        Writeln ('6) DNI: ', DNI);
+        Writeln ('7) Nacimiento: ', F_NAC);
+        Writeln ('8) Telefono: ', TEL);
+        Writeln ('9) Mail: ', MAIL);
+        Writeln ('10) ESTADO: ');
+        IF ESTADO=TRUE THEN
+            Write ('ACTIVO')
+            else
+            Write ('INACTIVO')
+        END;
     END;
 
-    FUNCTION OBTENER_N_CONT (VAR ARCH_C:ARCHIVO_C; POS: CARDINAL):STRING;
+    FUNCTION OBTENER_N_CONT (VAR ARCH_C:ARCHIVO_C; POS: LongInt):STRING;
     Var dato: DATOS_CONT;
     begin
         LEER_DATO_C(arch_c,pos,dato);

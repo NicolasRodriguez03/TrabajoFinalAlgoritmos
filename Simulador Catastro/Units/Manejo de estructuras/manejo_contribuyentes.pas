@@ -1,14 +1,15 @@
 unit manejo_contribuyentes;
 
 interface
-   USES manejo_archivo_cont,
+   USES manejo_archivo_cont, crt,
     manejo_Arboles,  Arboles, DEFINICION_DATOS,
     MANEJO_TERRENOS;
 
   PROCEDURE ALTA_C(var ARCH_C: ARCHIVO_C; VAR ARBOL_AYN:T_PUNT_A; VAR ARBOL_DNI:T_PUNT_A);
-  PROCEDURE MODIF_DATO_C(VAR ARCH_C: ARCHIVO_C; POS:CARDINAL; VAR REG:DATOS_CONT);
-  procedure MODIFICACION_C(VAR ARCH_C:ARCHIVO_C; POS:CARDINAL);
-  PROCEDURE BAJA(VAR ARCH_C:ARCHIVO_C; POS:CARDINAL );
+  PROCEDURE CARGAR_ARBOL (VAR ARCH_C:ARCHIVO_C; VAR ARBOL_AYN:T_PUNT_A; VAR ARBOL_DNI:T_PUNT_A);
+  PROCEDURE MODIF_DATO_C(VAR ARCH_C: ARCHIVO_C; POS:LongInt; VAR REG:DATOS_CONT);
+  procedure MODIFICACION_C(VAR ARCH_C:ARCHIVO_C; POS:LongInt);
+  PROCEDURE BAJA(VAR ARCH_C:ARCHIVO_C; POS:LongInt );
   PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT_A);
   PROCEDURE RECUP_ARCH_AYN (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT_A);
 
@@ -17,11 +18,13 @@ implementation
     var
         AUX_X,AUX_Y:T_DATO_ARBOL;
         R:DATOS_CONT;
-        POS:CARDINAL;
+        POS:LongInt;
     begin
       CARGAR_CONT(R);
+      //crear_abrir_C(arch_c);
       POS:=FILESIZE(ARCH_C);
       GUARDA_DATO_C (ARCH_C,POS,R);
+    //  close(arch_c);
       AUX_X.CLAVE:= CONCAT(R.APELLIDO, R.NOMBRE);
       AUX_Y.CLAVE:= (R.DNI);
       AUX_X.POS_ARCH:= POS;
@@ -30,7 +33,26 @@ implementation
       AGREGAR_ARBOL(ARBOL_DNI, AUX_Y);
     end;
 
-    PROCEDURE MODIF_DATO_C(VAR ARCH_C: ARCHIVO_C; POS:CARDINAL; VAR REG:DATOS_CONT);
+    PROCEDURE CARGAR_ARBOL (VAR ARCH_C:ARCHIVO_C; VAR ARBOL_AYN:T_PUNT_A; VAR ARBOL_DNI:T_PUNT_A);
+    VAR R:DATOS_CONT; C,I:LONGINT; AUX_X,AUX_Y:T_DATO_ARBOL;
+    begin
+      ARBOL_AYN:=NIL;
+      ARBOL_DNI:=NIL;
+      C:=0;
+      FOR I:=0 TO (FILESIZE(ARCH_C)-1) DO 
+        BEGIN
+        LEER_DATO_C(ARCH_C,C,R);
+        AUX_X.CLAVE:= CONCAT(R.APELLIDO, R.NOMBRE);
+        AUX_Y.CLAVE:= (R.DNI);
+        AUX_X.POS_ARCH:= I;
+        AUX_Y.POS_ARCH:= I;
+        AGREGAR_ARBOL(ARBOL_AYN, AUX_X);
+        AGREGAR_ARBOL(ARBOL_DNI, AUX_Y);
+        C:=C+1;
+        END;
+    END;
+
+    PROCEDURE MODIF_DATO_C(VAR ARCH_C: ARCHIVO_C; POS:LongInt; VAR REG:DATOS_CONT);
     VAR
         OP:BYTE;
         OP_2:string[2];
@@ -169,7 +191,7 @@ implementation
         END;
     end;
 
-    procedure MODIFICACION_C(VAR ARCH_C:ARCHIVO_C; POS:CARDINAL);
+    procedure MODIFICACION_C(VAR ARCH_C:ARCHIVO_C; POS:LongInt);
     VAR DATO:DATOS_CONT;
     begin
       MOSTRAR_DATOS_C(ARCH_C, POS);
@@ -177,7 +199,7 @@ implementation
       GUARDA_DATO_C(ARCH_C, POS, DATO);
     end;
 
-    PROCEDURE BAJA(VAR ARCH_C:ARCHIVO_C; POS:CARDINAL);
+    PROCEDURE BAJA(VAR ARCH_C:ARCHIVO_C; POS:LongInt);
     VAR
         OP:STRING; reg:DATOS_CONT; X:STRING[8];
     begin
@@ -196,12 +218,12 @@ implementation
 
 PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT_A);      // ANTES VERIFICAR QUE EXISTA EL ARCHIVO
    VAR
-       POS:CARDINAL;
+       POS:LongInt;
        AUX:DATOS_CONT;
        AUX_X:T_DATO_ARBOL;
    begin
        POS:=0;
-       crear_abrir_C(ARCH_C);
+       //crear_abrir_C(ARCH_C);
        WHILE NOT(EOF(ARCH_C)) DO
        begin
            LEER_DATO_c(ARCH_C,POS,AUX);
@@ -214,12 +236,12 @@ PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT_A);      // ANT
 
    PROCEDURE RECUP_ARCH_AYN (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT_A);      // ANTES VERIFICAR QUE EXISTA EL ARCHIVO
    VAR
-       POS:CARDINAL;
+       POS:LongInt;
        AUX:DATOS_CONT;
        AUX_X:T_DATO_ARBOL;
    begin
        POS:=0;
-       crear_abrir_C(ARCH_C);
+       //crear_abrir_C(ARCH_C);
        WHILE NOT(EOF(ARCH_C)) DO
        begin
            LEER_DATO_c(ARCH_C,POS,AUX);

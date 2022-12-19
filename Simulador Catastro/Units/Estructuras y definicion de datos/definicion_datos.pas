@@ -2,8 +2,8 @@ unit definicion_datos;
 
 interface
 const
-    ruta_terr='C:\Users\Standard\Documents\Final Algoritmos\Archivos\Terrenos.dat';
-    ruta_cont='C:\Users\Standard\Documents\Final Algoritmos\Archivos\Contribuyentes.dat';
+    ruta_terr='C:\Users\Standard\Downloads\Simulador Catastro\Archivos\Terrenos.dat';
+    ruta_cont='C:\Users\Standard\Downloads\Simulador Catastro\Archivos\Contribuyentes.dat';
 
 Type
 	T_DATO_T= RECORD							// Registro de datos de cada terreno, está contenido en la info de los nodos
@@ -35,8 +35,11 @@ Type
 
 
 VAR
-    ARCH_C:ARCHIVO_C;
-    ARCH_T:ARCHIVO_T;
+    ARCH_C: ARCHIVO_C;
+    ARCH_T: ARCHIVO_T;
+
+
 IMPLEMENTATION
+
 
 END.
