@@ -3,13 +3,13 @@ unit manejo_archivo_cont;
 interface
     uses definicion_datos, sysutils, MANEJO_ARCHIVO_TERR;
     Procedure crear_abrir_C(var ARCH_C:ARCHIVO_C);
-    PROCEDURE CARGAR_CONT(VAR X: DATOS_CONT);
+    function busqueda_archivo_n_cont (VAR ARCH_c: archivo_c; x:string):longint;
     PROCEDURE LEER_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:LongInt; VAR REG:DATOS_CONT);
     PROCEDURE GUARDA_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:LongInt; REG:DATOS_CONT);
     PROCEDURE MOSTRAR_DATOS_C(VAR ARCH_C: ARCHIVO_C; POS:LongInt);
     FUNCTION OBTENER_N_CONT (VAR ARCH_C:ARCHIVO_C; POS: LongInt):STRING;
-   FUNCTION CANT_PROPIEDADES (VAR ARCH_T:ARCHIVO_T; VAR ARCH_C:ARCHIVO_C; x:DATOS_CONT):INTEGER;
-          PROCEDURE CHEQUEO_ESTADO(var ARCH_C: ARCHIVO_C;var ARCH_T:ARCHIVO_T);
+    FUNCTION CANT_PROPIEDADES (VAR ARCH_T:ARCHIVO_T; VAR ARCH_C:ARCHIVO_C; x:DATOS_CONT):INTEGER;
+    PROCEDURE CHEQUEO_ESTADO(var ARCH_C: ARCHIVO_C;var ARCH_T:ARCHIVO_T);
 
 
 implementation
@@ -23,48 +23,23 @@ implementation
         rewrite(ARCH_C);
     end;
 
-  procedure busqueda_archivo_mens (VAR ARCH_T: archivo_t; x:string; var pos:LongInt);
-    var i:word;T:T_DATO_T;
+    function busqueda_archivo_n_cont (VAR ARCH_c: archivo_c; x:string):longint;
+    var i, pos:longint;
+        T:datos_cont;
     begin
-        //crear_abrir_t(arch_t);
         pos:=-1;
         i:=0;
         while (pos=-1) and (i<FILESIZE(arch_t)) do
         begin
-            LEER_DATO_T(ARCH_T,i,t);
-            if t.N_MENS=x THEN
-                pos:=I
+            LEER_DATO_c(ARCH_c,i,t);
+            if t.N_cont=x THEN
+                pos:=i
             else
                 i:=i+1;
         end;
+        busqueda_archivo_n_cont:=pos;
     END;
-
-    PROCEDURE CARGAR_CONT(VAR X: DATOS_CONT);
-    BEGIN
-        with (X) do
-        begin
-            Writeln (Utf8ToAnsi('Ingrese número de contribuyente'));
-            Readln(N_CONT);
-            Writeln ('Ingrese Apellido');
-            Readln (APELLIDO);
-            Writeln ('Ingrese nombre');
-            Readln (nombre);
-            Writeln (Utf8ToAnsi('Ingrese dirección'));
-            Readln (DIREC);
-            Writeln ('Ingrese ciudad');
-            Readln (ciudad);
-            Writeln ('Ingrese DNI');
-            Readln (DNI);
-            Writeln ('Ingrese fecha de nacimiento [DD/MM/AAAA]');
-            Readln (F_NAC);
-            Writeln (Utf8ToAnsi('Ingrese teléfono'));
-            Readln (TEL);
-            Writeln ('Ingrese mail');
-            Readln (mail);
-            ESTADO:=FALSE;
-        end;
-    END;
-
+   
     PROCEDURE LEER_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:LongInt; VAR REG:DATOS_CONT);
     BEGIN
         //crear_abrir_C(ARCH_C);

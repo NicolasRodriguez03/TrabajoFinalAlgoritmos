@@ -7,9 +7,10 @@ interface
     PROCEDURE GUARDAR_DATO_T(VAR ARCH_T: ARCHIVO_T; POS:LongInt; REG:T_DATO_T);
     PROCEDURE MUESTRA_DATOS_T(VAR E:T_DATO_T);
     PROCEDURE MOSTRAR_DATOS_T(VAR ARCH_T: ARCHIVO_T; POS:LongInt);
-    PROCEDURE CARGAR_T(VAR X: T_DATO_T);
+    PROCEDURE CARGAR_T(VAR X: T_DATO_T; x1:string; x2:string);
     procedure busqueda_archivo_mens (VAR ARCH_T: archivo_t; x:string; var pos:LongInt);
     PROCEDURE AVALUAR(VAR X:T_DATO_T);
+    Procedure Borrar_elemento(var arch_t:archivo_t; pos:longint);
 
 implementation
 Procedure crear_abrir_t(var ARCH_T:ARCHIVO_T);
@@ -57,14 +58,12 @@ Procedure crear_abrir_t(var ARCH_T:ARCHIVO_T);
         MUESTRA_DATOS_T(DATO);
     END;
 
-    PROCEDURE CARGAR_T(VAR X: T_DATO_T);
+    PROCEDURE CARGAR_T(VAR X: T_DATO_T; x1:string; x2:string);
     BEGIN
         with (X) do
         begin
-            Writeln ('Ingrese numero de contribuyente');
-            Readln(N_CONT);
-            Writeln (Utf8ToAnsi('Ingrese número de plano de mensura'));
-            Readln (N_MENS);
+            n_cont:=x1;
+            N_MENS:=x2;
             Writeln (Utf8ToAnsi('Ingrese fecha de inscripción'));
             Readln (F_INC);
             Writeln ('Ingrese domicilio parcelario');
@@ -77,6 +76,8 @@ Procedure crear_abrir_t(var ARCH_T:ARCHIVO_T);
             Readln (TIPO_E);
         end;
     END;
+
+    
 
     procedure busqueda_archivo_mens (VAR ARCH_T: archivo_t; x:string; var pos:LongInt);
     var i:word;T:T_DATO_T;
@@ -115,5 +116,32 @@ Procedure crear_abrir_t(var ARCH_T:ARCHIVO_T);
         END;
         X.AVALUO:= (BASICO*X.SUPERFICIE)*(AUX_ZONA*AUX_TIPO_E);
     END;
+
+    Procedure Borrar_elemento(var arch_t:archivo_t; pos:longint);
+    var
+        aux_t:archivo_t;
+        i,c:longint;
+        aux_reg:t_dato_t;
+    begin
+      assign (AUX_T, RUTA_AUX);
+      REWRITE(AUX_T);
+      RESET(AUX_T);
+      c:=0;
+      For I:=0 to (FILESIZE(arch_t)-1) do
+        BEGIN
+        IF POS <> I THEN 
+            begin
+            LEER_DATO_T(arch_t, i, aux_reg);
+            GUARDAR_DATO_T(aux_t, c, aux_reg);
+            c:=c+1
+            END;
+        end;
+      close(arch_t);
+      close(aux_t);   
+      erase(arch_t); 
+      rename(aux_t,ruta_terr);
+      arch_t:=(aux_t);
+      crear_abrir_t(arch_t);
+    end;
 
 end.

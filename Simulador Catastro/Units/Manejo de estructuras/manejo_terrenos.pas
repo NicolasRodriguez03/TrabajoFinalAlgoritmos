@@ -2,8 +2,8 @@ unit manejo_terrenos;
 
 interface
 uses
-    definicion_datos, crt, lista, manejo_archivo_terr;
-    PROCEDURE ALTA_T (VAR ARCH_T: ARCHIVO_T);
+    definicion_datos, crt, lista, manejo_archivo_terr, MANEJO_ARCHIVO_CONT;
+    PROCEDURE ALTA_T (VAR ARCH_T: ARCHIVO_T; x1:string);
     PROCEDURE MODIF_DATO_T(VAR ARCH_T: ARCHIVO_T; POS:longint; VAR DATO:T_DATO_T);
     procedure MODIFICACION_T(VAR ARCH_T:ARCHIVO_T; POS:longint);
     PROCEDURE CONSULTA_T(VAR ARCH_T:ARCHIVO_T; POS:longint);
@@ -11,12 +11,26 @@ uses
     procedure BAJA_TERRENO (VAR ARCH_T:ARCHIVO_T; POS:longint);
 
 implementation
-    PROCEDURE ALTA_T (VAR ARCH_T: ARCHIVO_T);
+    PROCEDURE ALTA_T (VAR ARCH_T: ARCHIVO_T; x1:string);
     VAR X:T_DATO_T;
+        n_cont:string;
     BEGIN
-        CARGAR_T(X);
-        AVALUAR(X);
-        GUARDAR_DATO_T(ARCH_T,FILESIZE(arch_t),X);
+         Writeln ('Ingrese numero de contribuyente');
+            Readln(N_CONT);
+        if busqueda_archivo_n_cont(arch_c,n_cont) <> -1 then
+            begin
+            CARGAR_T(X, n_cont, x1);
+            AVALUAR(X);
+            GUARDAR_DATO_T(ARCH_T,FILESIZE(arch_t),X);
+            end
+        else
+            begin
+            ClrScr;
+            WriteLn(Utf8ToAnsi('No existe ese contribuyente, por favor realice alta a través del menú de contribuyentes'));
+            Writeln('Presione cualquier tecla para continuar');
+            readkey;
+            end;
+
     END;
 
 
@@ -130,7 +144,8 @@ implementation
     procedure MODIFICACION_T(VAR ARCH_T:ARCHIVO_T; POS:longint);
     VAR DATO:T_DATO_T;
     begin
-      MOSTRAR_DATOS_T(ARCH_T, POS);                   //esto esta bien, no tocar
+      MOSTRAR_DATOS_T(ARCH_T, POS);
+      Writeln();
       MODIF_DATO_t(ARCH_T, POS, DATO);
       GUARDAR_DATO_T(ARCH_T, POS, DATO);
     end;
@@ -159,21 +174,23 @@ implementation
         end;
     end;
 
+
     procedure BAJA_TERRENO (VAR ARCH_T:ARCHIVO_T; POS:longint); //modificar eliminando
     Var REG:T_DATO_T;
-        OP:BYTE;        // VER SI PODEMOS CAMBIAR A STRING
+        OP, aux:string;        // VER SI PODEMOS CAMBIAR A STRING
     BEGIN
         MOSTRAR_DATOS_T(ARCH_T, POS);
         Writeln ('Desea dar de baja a este terreno? (SI/NO)');
+        readln(aux); // auxiliar que evita el bug de que tpascal saltea el read de strings a veces
         Readln (OP);
-        IF (OP=1) then
+        IF (OP='Si') or (OP='SI') or (OP='si') then
         BEGIN
             LEER_DATO_T(ARCH_T, POS, REG);
-            REG.N_CONT:=('-');
+            FILLCHAR(REG,SIZEOF(REG),#0);
             GUARDAR_DATO_T(ARCH_T, POS, REG);
+            Borrar_elemento(ARCH_T,POS);
             WRITELN('La baja del terreno ', REG.N_MENS, ' ha sido exitosa, presione cualquier tecla para volver al menu principal');
             readkey;
         END;
     end;
 END.
-

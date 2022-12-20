@@ -4,6 +4,7 @@ interface
 const
     ruta_terr='C:\Users\Standard\Downloads\Simulador Catastro\Archivos\Terrenos.dat';
     ruta_cont='C:\Users\Standard\Downloads\Simulador Catastro\Archivos\Contribuyentes.dat';
+	ruta_aux='C:\Users\Standard\Downloads\Simulador Catastro\Archivos\Auxiliar.dat';
 
 Type
 	T_DATO_T= RECORD							// Registro de datos de cada terreno, está contenido en la info de los nodos

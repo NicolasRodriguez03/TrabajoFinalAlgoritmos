@@ -5,32 +5,88 @@ interface
     manejo_Arboles,  Arboles, DEFINICION_DATOS,
     MANEJO_TERRENOS;
 
-  PROCEDURE ALTA_C(var ARCH_C: ARCHIVO_C; VAR ARBOL_AYN:T_PUNT_A; VAR ARBOL_DNI:T_PUNT_A);
+ procedure leer_clave(var tipo:boolean; var clave1:string; var clave2:string);
+  PROCEDURE CARGAR_CONT(VAR X: DATOS_CONT; tipo:boolean; clave1:string; clave2:string);
+  PROCEDURE ALTA_C(var ARCH_C: ARCHIVO_C; x:boolean; clave1:string; clave2:string);
   PROCEDURE CARGAR_ARBOL (VAR ARCH_C:ARCHIVO_C; VAR ARBOL_AYN:T_PUNT_A; VAR ARBOL_DNI:T_PUNT_A);
   PROCEDURE MODIF_DATO_C(VAR ARCH_C: ARCHIVO_C; POS:LongInt; VAR REG:DATOS_CONT);
   procedure MODIFICACION_C(VAR ARCH_C:ARCHIVO_C; POS:LongInt);
   PROCEDURE BAJA(VAR ARCH_C:ARCHIVO_C; POS:LongInt );
-  PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT_A);
-  PROCEDURE RECUP_ARCH_AYN (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT_A);
 
 implementation
-   PROCEDURE ALTA_C(var ARCH_C: ARCHIVO_C; VAR ARBOL_AYN:T_PUNT_A; VAR ARBOL_DNI:T_PUNT_A);
+ procedure leer_clave(var tipo:boolean; var clave1:string; var clave2:string); // Lee la clave y el tipo al que pertenece
+    var
+      x:string;
+    begin
+      Writeln ('Desea por apellido y nombre, o por DNI? (Ingresar "nombre" o "DNI")');
+      Readln (x);
+      If (x='Nombre') or (x='NOMBRE') or (x='nombre') then
+        begin
+        tipo:=true;
+        Writeln('Ingrese apellido/s');
+        Readln (clave1);
+        Writeln('Ingrese nombre/s');
+        Readln (clave2);
+        end
+      else 
+        if (x='DNI') OR (X='dni') then
+          begin
+          tipo:=false;
+          Writeln ('Ingrese DNI:');
+          Readln (CLAVE1);
+          end
+        else 
+          leer_clave(tipo, clave1, clave2)
+    end;
+   PROCEDURE CARGAR_CONT(VAR X: DATOS_CONT; tipo:boolean; clave1:string; clave2:string);
+    BEGIN
+        with (X) do
+        begin
+        Writeln (Utf8ToAnsi('Ingrese número de contribuyente'));
+        Readln(N_CONT);
+        if busqueda_archivo_n_cont(arch_c,n_cont)<>-1 then
+            begin
+              writeln(Utf8ToAnsi('El contribuyente n° '), n_cont,Utf8ToAnsi(' ya existe, por favor ingrese un n° de contribuyente distinto del previamente ingresado'));
+              readln (n_cont);
+            end;
+        if tipo then
+            begin
+            Apellido:=clave1;
+            Nombre:=clave2;
+            Writeln ('Ingrese DNI');
+            Readln (DNI);
+            end
+        else
+            begin
+            Writeln ('Ingrese Apellido');
+            Readln (APELLIDO);
+            Writeln ('Ingrese nombre');
+            Readln (nombre);
+            DNI:=clave1;
+            end;
+        Writeln (Utf8ToAnsi('Ingrese dirección'));
+        Readln (DIREC);
+        Writeln ('Ingrese ciudad');
+        Readln (ciudad);
+        Writeln ('Ingrese fecha de nacimiento [DD/MM/AAAA]');
+        Readln (F_NAC);
+        Writeln (Utf8ToAnsi('Ingrese teléfono'));
+        Readln (TEL);
+        Writeln ('Ingrese mail');
+        Readln (mail);
+        ESTADO:=FALSE;
+        end;
+    END;
+
+   PROCEDURE ALTA_C(var ARCH_C: ARCHIVO_C; x:boolean; clave1:string; clave2:string);
     var
         AUX_X,AUX_Y:T_DATO_ARBOL;
         R:DATOS_CONT;
         POS:LongInt;
     begin
-      CARGAR_CONT(R);
-      //crear_abrir_C(arch_c);
+      CARGAR_CONT(R, x, clave1, clave2);
       POS:=FILESIZE(ARCH_C);
       GUARDA_DATO_C (ARCH_C,POS,R);
-    //  close(arch_c);
-      AUX_X.CLAVE:= CONCAT(R.APELLIDO, ' ', R.NOMBRE);
-      AUX_Y.CLAVE:= (R.DNI);
-      AUX_X.POS_ARCH:= POS;
-      AUX_Y.POS_ARCH:= POS;
-      AGREGAR_ARBOL(ARBOL_AYN, AUX_X);
-      AGREGAR_ARBOL(ARBOL_DNI, AUX_Y);
     end;
 
     PROCEDURE CARGAR_ARBOL (VAR ARCH_C:ARCHIVO_C; VAR ARBOL_AYN:T_PUNT_A; VAR ARBOL_DNI:T_PUNT_A);
@@ -60,11 +116,11 @@ implementation
         AUX_2:BYTE;
     begin
       LEER_DATO_C(ARCH_C,POS,REG);
-      Writeln ('¿Que dato desea modificar? (Ingrese nro. de dato o ingrese 0 para volver al menu)');
+      Writeln (Utf8ToAnsi('¿Qué dato desea modificar? (Ingrese nro. de dato o ingrese  para volver al menu)'));
       Readln (OP);
       CASE OP OF
         1: BEGIN
-        Writeln ('Desea modificar nro. de contribuyente? (SI/NO)');
+           Writeln ('Desea modificar nro. de contribuyente? (SI/NO)');
            Readln (OP_2);
            IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
             BEGIN
@@ -76,7 +132,7 @@ implementation
             MODIF_DATO_C (ARCH_C, POS,REG);
             END;
         2:BEGIN
-          Writeln ('Desea modificar nombre? (SI/NO)');
+           Writeln ('Desea modificar nombre? (SI/NO)');
            Readln (OP_2);
            IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
             BEGIN
@@ -194,7 +250,8 @@ implementation
     procedure MODIFICACION_C(VAR ARCH_C:ARCHIVO_C; POS:LongInt);
     VAR DATO:DATOS_CONT;
     begin
-      MOSTRAR_DATOS_C(ARCH_C, POS);
+     MOSTRAR_DATOS_C(ARCH_C, POS);
+     writeln();
       MODIF_DATO_C (ARCH_C, POS, DATO);
       GUARDA_DATO_C(ARCH_C, POS, DATO);
     end;
@@ -204,7 +261,7 @@ implementation
         OP,aux:STRING; reg:DATOS_CONT; X:STRING[8];
     begin
       MOSTRAR_DATOS_C(ARCH_C, POS);
-      Writeln('Desea dar de baja a este contribuyente? (1:si/0:no)');
+      Writeln('Desea dar de baja a este contribuyente? (si/no)');
       readln(aux); // esto esta porque parece que hay un bug de Tpascal que a veces se saltea algun que otro readln
       Readln (OP);
       IF (OP='SI') OR (OP='Si') or (OP='si') then
@@ -217,39 +274,4 @@ implementation
       end;
     end;
 
-PROCEDURE RECUP_ARCH_DNI (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT_A);      // ANTES VERIFICAR QUE EXISTA EL ARCHIVO
-   VAR
-       POS:LongInt;
-       AUX:DATOS_CONT;
-       AUX_X:T_DATO_ARBOL;
-   begin
-       POS:=0;
-       //crear_abrir_C(ARCH_C);
-       WHILE NOT(EOF(ARCH_C)) DO
-       begin
-           LEER_DATO_c(ARCH_C,POS,AUX);
-           AUX_X.CLAVE:= AUX.DNI;
-           AUX_X.POS_ARCH:= POS;
-           AGREGAR_ARBOL(ARBOL, AUX_X);
-           POS:= POS+1;
-       end;
-   end;
-
-   PROCEDURE RECUP_ARCH_AYN (VAR ARCH_C:ARCHIVO_C; VAR ARBOL:T_PUNT_A);      // ANTES VERIFICAR QUE EXISTA EL ARCHIVO
-   VAR
-       POS:LongInt;
-       AUX:DATOS_CONT;
-       AUX_X:T_DATO_ARBOL;
-   begin
-       POS:=0;
-       //crear_abrir_C(ARCH_C);
-       WHILE NOT(EOF(ARCH_C)) DO
-       begin
-           LEER_DATO_c(ARCH_C,POS,AUX);
-           AUX_X.CLAVE:= CONCAT(AUX.APELLIDO, ' ', AUX.NOMBRE);
-           AUX_X.POS_ARCH:= POS;
-           AGREGAR_ARBOL(ARBOL, AUX_X);
-           POS:= POS+1;
-       end;
-   end;
 end.

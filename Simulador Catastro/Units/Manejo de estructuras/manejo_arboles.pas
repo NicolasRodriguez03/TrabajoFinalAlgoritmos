@@ -3,23 +3,12 @@ unit manejo_Arboles;
 interface
   USES
      CRT, manejo_archivo_cont, definicion_datos, Arboles;
-  procedure leer_clave(var x:string; var clave:string);
+  
   PROCEDURE CONSULTA(VAR ARBOL:T_PUNT_A; var pos:LongInt; CLAVE:STRING);
-  PROCEDURE BUSCAR (ARBOL:T_PUNT_A; VAR POS:LongInt);
   PROCEDURE MUESTRA_DATOS (VAR ARCH_C:ARCHIVO_C ; ARBOL: T_PUNT_A);
   FUNCTION PREORDEN(ARBOL:T_PUNT_A; BUSCADO:STRING):T_PUNT_A;
-  PROCEDURE SUPRIMIR_NODO (VAR ARBOL:T_PUNT_A);
-  PROCEDURE ELIMINA_NODO(ARBOL:T_PUNT_A;BUSCADO:STRING);
 
 implementation
-    procedure leer_clave(var x:string; var clave:string); // Lee la clave y el tipo al que pertenece
-    begin
-      Writeln ('Desea por apellido y nombre, o por DNI? (Ingresar "nombre" o "DNI")');
-      Readln (x);
-      Writeln (Utf8ToAnsi('Ingrese su clave de búsqueda'));
-      Readln (CLAVE);
-    end;
-
   PROCEDURE MUESTRA_DATOS (VAR ARCH_C:ARCHIVO_C; ARBOL: T_PUNT_A);  // Muestra los datos del archivo en la posicion contenida por nodo de arbol dado
   VAR
     X:WORD;
@@ -51,53 +40,5 @@ implementation
     IF AUX<>NIL THEN
       POS:= AUX^.INFO.POS_ARCH;
     end;
-
-  PROCEDURE BUSCAR (ARBOL:T_PUNT_A; VAR POS:LongInt);  // Es el comando que se usa cuando se invoca cuando se quiere realizar la consulta
-  VAR CLAVE,X:STRING;
-  BEGIN
-  ClrScr;
-  IF ARBOL_VACIO (ARBOL) THEN
-    WriteLn ('El arbol se encuentra vacio')
-  ELSE
-    LEER_CLAVE(X,CLAVE);
-    CONSULTA(ARBOL,POS,CLAVE);
-  end;
-
-   PROCEDURE SUPRIMIR_NODO (VAR ARBOL:T_PUNT_A); // 
-  VAR
-  ANT, TEMP: T_PUNT_A;
-  BEGIN
-    TEMP:= ARBOL;
-    IF ARBOL^.H_D = nil THEN
-      ARBOL:=ARBOL^.H_I
-    ELSE
-      IF ARBOL^.H_I = nil THEN
-        ARBOL:= ARBOL^.H_D
-      ELSE
-      BEGIN
-        TEMP:= ARBOL^.H_I;
-        ANT:= ARBOL;
-        WHILE TEMP^.H_D <> nil DO
-        BEGIN
-          ANT:= TEMP;
-          TEMP:= ARBOL^.H_D;
-        end;
-        ARBOL^.INFO:= TEMP^.INFO;
-        IF ANT = ARBOL THEN
-          ANT^.H_I:= TEMP^.H_I
-        ELSE
-          ANT^.H_D:= TEMP^.H_I;
-      end;
-      DISPOSE (TEMP);
-  end;
-
-  PROCEDURE ELIMINA_NODO(ARBOL:T_PUNT_A;BUSCADO:STRING);  //
-  VAR
-    ARBOL1:T_PUNT_A;
-  BEGIN
-    ARBOL1:= PREORDEN (ARBOL,BUSCADO);
-    SUPRIMIR_NODO (ARBOL1);
-  end;
-
 
 end.

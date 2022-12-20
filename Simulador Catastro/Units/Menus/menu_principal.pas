@@ -7,43 +7,30 @@ uses
  menu_listados_ordenados,
  menu_terrenos, CRT;
 
-PROCEDURE MENU();
+PROCEDURE MENU;
 
 implementation
-  PROCEDURE MENU();
+  PROCEDURE MENU;
   var
     resp:BYTE;
   begin
-  Clrscr;
-  Writeln ('MENU PRINCIPAL');
-  Writeln ('1) Manejo de Contribuyentes');
-  Writeln ('2) Manejo de Terrenos');
-  Writeln ('3) Listados Ordenados e Impresion');
-  Writeln (Utf8ToAnsi('4) Estadísticas'));
-  Readln (resp);
-  case (resp) OF
-     1: begin
-        M_CONTRIBUYENTES();
-        MENU();
-        end;
-
-     2: begin
-        m_terrenos();
-        MENU();
-        end;
-
-     3: begin
-        MENU_listados();
-        MENU();
-        end;
-
-     4: begin
-        M_ESTADISTICAS;
-        MENU();
-        end;
-     END;
+   Clrscr;
+   Writeln ('MENU PRINCIPAL');
+   Writeln ('1) Manejo de Contribuyentes');
+   Writeln ('2) Manejo de Terrenos');
+   Writeln ('3) Listados Ordenados e Impresion');
+   Writeln (Utf8ToAnsi('4) Estadísticas'));
+   Writeln ('O ingresa cualquier otra tecla para regresar al menu principal');
+   Writeln();
+   Readln (resp);
+   case (resp) OF
+      1: M_CONTRIBUYENTES;
+      2: m_terrenos;
+      3: MENU_listados;
+      4: M_ESTADISTICAS;
+   end;
+   menu;
   END;
 
 END.
-
 
