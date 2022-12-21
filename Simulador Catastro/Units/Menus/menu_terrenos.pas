@@ -40,7 +40,6 @@ implementation
                         ClrScr;
                         MODIFICACION_T(ARCH_T, POS);
                         ClrScr;
-                        writeln();
                         MOSTRAR_DATOS_T(ARCH_T, POS);
                         Writeln();
                         Writeln('Presione cualquier tecla para continuar');

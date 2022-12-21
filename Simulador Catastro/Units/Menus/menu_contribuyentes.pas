@@ -10,45 +10,51 @@ implementation
   VAR POS: LongInt; OP_1,OP,CLAVE1, CLAVE2:STRING; ARBOL_AYN,ARBOL_DNI:T_PUNT_A;
       X:BOOLEAN;
   BEGIN
-      Clrscr;
-      CLAVE2:='';
-      crear_abrir_C(arch_c);
-      crear_abrir_T(arch_t);
-      CARGAR_ARBOL (ARCH_C, ARBOL_AYN, ARBOL_DNI);
-      CHEQUEO_ESTADO(ARCH_C, ARCH_T);
-      leer_clave(x, clave1, clave2);
-      WHILE clave1<>('') DO
+    Clrscr;
+    CLAVE2:='';
+    crear_abrir_C(arch_c);
+    crear_abrir_T(arch_t);
+    CARGAR_ARBOL (ARCH_C, ARBOL_AYN, ARBOL_DNI);
+    CHEQUEO_ESTADO(ARCH_C, ARCH_T);
+    leer_clave(x, clave1, clave2);
+    if clave1<>('') then
+    begin
+      If x then
+        Consulta(ARBOL_AYN, pos, (CONCAT(clave1, ' ', clave2)) )
+      ELSE
+        Consulta(ARBOL_DNI, pos, clave1);
+      ClrScr;
+      if pos>=0 then
       begin
-        If x then
-          Consulta(ARBOL_AYN, pos, (CONCAT(clave1, ' ', clave2)) )
-        ELSE
-          Consulta(ARBOL_DNI, pos, clave1);
-        ClrScr;
-        if pos>=0 then
-        begin
-          gotoxy (10,1);
-          textcolor(blue);
-          Writeln ('MENU DE CONTRIBUYENTES');
-          textcolor(black);
-          MOSTRAR_DATOS_C(ARCH_C, POS);
-          Writeln();
-          Writeln ('-1 Baja');
-          Writeln (Utf8ToAnsi('-2 Modificación'));
-          Writeln ('O ingrese cualquier otra tecla para regresar al menu principal');
-          Writeln();
-          READ (OP);
-          case (OP) OF
-            '1':begin
-                  ClrScr;
-                  BAJA(ARCH_C, POS);
-                end;
-            '2':begin
-                  ClrScr;
-                  MODIFICACION_C(ARCH_C,POS);
-                  readkey;
-                end;
-          end;
-        end
+        gotoxy (10,1);
+        textcolor(blue);
+        Writeln ('MENU DE CONTRIBUYENTES');
+        textcolor(black);
+        MOSTRAR_DATOS_C(ARCH_C, POS);
+        Writeln();
+        Writeln ('-1 Baja');
+        Writeln (Utf8ToAnsi('-2 Modificación'));
+        Writeln ('O ingrese cualquier otra tecla para regresar al menu principal');
+        Writeln();
+        READ (OP);
+        case (OP) OF
+          '1':begin
+                ClrScr;
+                BAJA(ARCH_C, POS);
+              end;
+          '2':begin
+                ClrScr;
+                MODIFICACION_C(ARCH_C,POS);
+                ClrScr;
+                MOSTRAR_DATOS_C(arch_c,pos);
+                Writeln();
+                Writeln('Presione cualquier tecla para continuar');
+                readkey;
+              end;
+        end;
+        close(arch_c);
+        close(arch_t);
+      end
       else
       begin
         Writeln('Contribuyente ', CONCAT(CLAVE1, ' ', CLAVE2),' no encontrado, desea realizar el alta? (si/no)');
@@ -59,9 +65,9 @@ implementation
           Writeln ('Realizando ALTA');
           ALTA_C(ARCH_C, x, clave1, clave2);
         end;
-      end;
-close(arch_c);
+      close(arch_c);
       close(arch_t);
+      end;
     end
     else
     begin
