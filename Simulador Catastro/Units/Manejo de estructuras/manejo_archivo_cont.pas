@@ -60,14 +60,14 @@ implementation
     LEER_DATO_C(ARCH_C,POS, DATO);
     WITH (DATO) DO
         BEGIN
-        Writeln (Utf8ToAnsi('1) NÚMERO DE CONTRIBUYENTE: '),N_CONT );
+        Writeln ('1) NÚMERO DE CONTRIBUYENTE: ',N_CONT );
         Writeln ('2) NOMBRE: ', NOMBRE);
         Writeln ('3) APELLIDO: ',APELLIDO);
-        Writeln (Utf8ToAnsi('4) Dirección: '), DIREC);
+        Writeln ('4) Dirección: ', DIREC);
         Writeln ('5) Ciudad: ',ciudad);
         Writeln ('6) DNI: ', DNI);
         Writeln ('7) Nacimiento: ', F_NAC);
-        Writeln (Utf8ToAnsi('8) Telefono: '), TEL);
+        Writeln ('8) Telefono: ', TEL);
         Writeln ('9) Mail: ', MAIL);
         IF ESTADO=TRUE THEN
             Writeln ('10) ESTADO: ACTIVO')

@@ -3,9 +3,9 @@ unit menu_principal;
 interface
 uses
  menu_contribuyentes,
- menu_estadisticas,
+ menu_estadisticas, Graficos,
  menu_listados_ordenados,
- menu_terrenos, CRT;
+ menu_terrenos, UnicodeCRT;
 
 PROCEDURE MENU;
 
@@ -16,10 +16,11 @@ implementation
   begin
     textbackground(white);
     Clrscr;
-    gotoxy (47,10);
+    gotoxy (48,10);
     textcolor(red);
     Writeln ('MENU PRINCIPAL');
     textcolor(black);
+    Box(37,9, 73,16);
     gotoxy (39,11);
     Writeln ('1) Manejo de Contribuyentes');
     gotoxy (39,12);
@@ -27,7 +28,7 @@ implementation
     gotoxy (39,13);
     Writeln ('3) Listados Ordenados e Impresion');
     gotoxy (39,14);
-    Writeln (Utf8ToAnsi('4) Estadísticas'));
+    Writeln ('4) Estadísticas');
     gotoxy (42,15);
     writeln ('Respuesta: ');
     gotoxy (53,15);
@@ -42,4 +43,3 @@ implementation
   END;
 
 END.
-

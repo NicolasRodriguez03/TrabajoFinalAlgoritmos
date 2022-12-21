@@ -1,18 +1,33 @@
 unit menu_terrenos;
 
 interface
-USES manejo_terrenos, CRT,DEFINICION_DATOS, MANEJO_ARCHIVO_TERR, manejo_archivo_cont;
+USES manejo_terrenos, unicodeCRT,DEFINICION_DATOS, MANEJO_ARCHIVO_TERR, manejo_archivo_cont, graficos;
 procedure m_terrenos;
 
 implementation
+    procedure Titulo_Menu;
+    begin
+        gotoxy (48,10);
+        textcolor(magenta);
+        Writeln('MENU DE TERRENOS');
+        textcolor (black);
+    end;
+
+
+
     procedure m_terrenos;
     var
         x_1:string[15]; //numero de plano de mensura
         OP,OP_1:STRING; POS:longint;
     begin
+        textbackground(white);
         Clrscr;
         crear_abrir_T(ARCH_T);
+        Box(37,9, 73,16);
+        Titulo_Menu;
+        Gotoxy(40,11);
         Writeln('Ingrese n. de plano de mensura');
+        Gotoxy(50,13);
         Readln (x_1);
         if x_1<>('') then
         begin
@@ -20,20 +35,21 @@ implementation
             if pos>=0 then
             begin
                 ClrScr;
-                gotoxy (10,1);
+                Box(1,9, 63,23);
+                gotoxy (25,10);
                 textcolor(magenta);
                 Writeln('MENU DE TERRENOS');
                 textcolor (black);
                 MOSTRAR_DATOS_T(ARCH_T, POS);
                 Writeln();
                 Writeln ('-1 Baja');
-                Writeln (Utf8ToAnsi('-2 Modificación'));
+                Writeln ('-2 Modificación');
                 Writeln ('O ingresa cualquier otra tecla para regresar al menu principal');
                 Writeln();
                 READ (OP);
                 case OP OF
                     '1':begin
-                        ClrScr;    
+                        ClrScr;
                         BAJA_TERRENO(arch_t, pos);
                         end;
                     '2':begin
@@ -49,7 +65,14 @@ implementation
             end
             else
             begin
-                Writeln('Terreno no encontrado, desea realizar el alta? (si/no)');
+                ClrScr;
+                Box(37,9, 73,16);
+                Titulo_Menu;
+                Gotoxy(46,11);
+                Write('Terreno no encontrado');
+                Gotoxy(40,12);
+                Write ('desea realizar el alta? (si/no)');
+                Gotoxy(53,14);
                 Readln (OP_1);
                 IF (OP_1='SI') OR (OP_1='Si') or (OP_1='si') then
                 begin
@@ -65,12 +88,12 @@ implementation
         else
         begin
             CLOSE(ARCH_T);
-            Writeln(Utf8ToAnsi('Por favor ingrese un número de mensura válido'));
-            Writeln(Utf8ToAnsi('Presione cualquier tecla para volver al menú de terrenos'));
+            Writeln('Por favor ingrese un número de mensura válido');
+            Writeln('Presione cualquier tecla para volver al menú de terrenos');
             readkey;
             m_terrenos;
         end;
-        
+
     end;
 
 end.

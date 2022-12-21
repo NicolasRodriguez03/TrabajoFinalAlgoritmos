@@ -119,8 +119,6 @@ implementation
       PROP_MP:= ((TOTAL_MP*100)/TOTAL)
     ELSE
       PROP_MP:= 0;
-    writeln('total ', total);
-    writeln('total mp ', total_mp);
   END;
 end.
 

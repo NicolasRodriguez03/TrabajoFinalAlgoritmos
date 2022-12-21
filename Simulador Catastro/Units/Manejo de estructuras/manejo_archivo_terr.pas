@@ -1,7 +1,7 @@
 unit manejo_archivo_terr;
 
 interface
-    USES CRT, DEFINICION_DATOS, sysutils;
+    USES unicodeCRT, DEFINICION_DATOS, sysutils;
     Procedure crear_abrir_T(var ARCH_T:ARCHIVO_T);
     PROCEDURE LEER_DATO_T(VAR ARCH_T:ARCHIVO_T; POS:LongInt; VAR DATO: T_DATO_T);
     PROCEDURE GUARDAR_DATO_T(VAR ARCH_T: ARCHIVO_T; POS:LongInt; REG:T_DATO_T);
@@ -43,11 +43,11 @@ Procedure crear_abrir_t(var ARCH_T:ARCHIVO_T);
         begin
             Writeln ('1) NUMERO DE CONTRIBUYENTE: ',N_CONT );
             Writeln ('2) NUMERO PLANO DE MENSURA: ', N_MENS);
-            Writeln (Utf8ToAnsi('3) FECHA INSCRIPCIÓN: '), F_INC);
-            Writeln (Utf8ToAnsi('4) Dirección: '), DOMICILIO);
+            Writeln ('3) FECHA INSCRIPCIÓN: ', F_INC);
+            Writeln ('4) Dirección: ', DOMICILIO);
             Writeln ('5) ZONA: ', ZONA);
-            Writeln (Utf8ToAnsi('6) TIPO EDIFICACIÓN : '), TIPO_E);
-            WRITELN (Utf8ToAnsi('7) AVALÚO: $'), AVALUO:5:2) ;
+            Writeln ('6) TIPO EDIFICACIÓN : ', TIPO_E);
+            WRITELN ('7) AVALÚO: $', AVALUO:5:2);
             WRITELN ('8) SUPERFICIE: ', SUPERFICIE:5:2);
         end;
  END;
@@ -65,7 +65,7 @@ Procedure crear_abrir_t(var ARCH_T:ARCHIVO_T);
             n_cont:=x1;
             N_MENS:=x2;
             textcolor(magenta);
-            Writeln (Utf8ToAnsi('Ingrese fecha de inscripción'));
+            Writeln ('Ingrese fecha de inscripcion ');
             textcolor(black);
             Readln (F_INC);
             textcolor(magenta);
@@ -88,7 +88,7 @@ Procedure crear_abrir_t(var ARCH_T:ARCHIVO_T);
               READLN(ZONA);
             end;
             textcolor(magenta);
-            Writeln (Utf8ToAnsi('Ingrese tipo de edificación [1-5]'));
+            Writeln ('Ingrese tipo de edificación [1-5]');
             textcolor(black);
             textcolor(magenta);
             Readln (TIPO_E);

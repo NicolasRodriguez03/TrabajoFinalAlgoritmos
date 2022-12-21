@@ -10,6 +10,7 @@ implementation
   VAR POS: LongInt; OP_1,OP,CLAVE1, CLAVE2:STRING; ARBOL_AYN,ARBOL_DNI:T_PUNT_A;
       X:BOOLEAN;
   BEGIN
+    textbackground(white);
     Clrscr;
     CLAVE2:='';
     crear_abrir_C(arch_c);
@@ -33,7 +34,7 @@ implementation
         MOSTRAR_DATOS_C(ARCH_C, POS);
         Writeln();
         Writeln ('-1 Baja');
-        Writeln (Utf8ToAnsi('-2 Modificación'));
+        Writeln ('-2 Modificación');
         Writeln ('O ingrese cualquier otra tecla para regresar al menu principal');
         Writeln();
         READ (OP);
@@ -73,8 +74,8 @@ implementation
     begin
       close(arch_c);
       close(arch_t);
-      Writeln(Utf8ToAnsi('Por favor ingrese una clave válida'));
-      Writeln(Utf8ToAnsi('Presione cualquier tecla para volver al menú de contribuyentes'));
+      Writeln('Por favor ingrese una clave válida');
+      Writeln('Presione cualquier tecla para volver al menú de contribuyentes');
       readkey;
       M_CONTRIBUYENTES;
     end;

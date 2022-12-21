@@ -2,7 +2,7 @@ unit manejo_terrenos;
 
 interface
 uses
-    definicion_datos, crt, manejo_archivo_terr, MANEJO_ARCHIVO_CONT;
+    definicion_datos, unicodecrt, manejo_archivo_terr, MANEJO_ARCHIVO_CONT;
     PROCEDURE ALTA_T (VAR ARCH_T: ARCHIVO_T; x1:string);
     PROCEDURE MODIF_DATO_T(VAR ARCH_T: ARCHIVO_T; POS:longint; VAR DATO:T_DATO_T);
     procedure MODIFICACION_T(VAR ARCH_T:ARCHIVO_T; POS:longint);
@@ -28,7 +28,7 @@ implementation
         else
             begin
             ClrScr;
-            WriteLn(Utf8ToAnsi('No existe ese contribuyente, por favor realice alta a través del menú de contribuyentes'));
+            WriteLn('No existe ese contribuyente, por favor realice alta a través del menú de contribuyentes');
             Writeln('Presione cualquier tecla para continuar');
             readkey;
             end;
@@ -56,47 +56,47 @@ implementation
                     Writeln ('Ingrese el nuevo dato');
                     Readln (AUX);
                     DATO.N_CONT:= AUX;
-                    Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+                    Writeln('La modificación ha sido exitosa');
                     END
                 ELSE
                     MODIF_DATO_T(ARCH_T, POS, DATO);
                 END;
             2: BEGIN
-                Writeln (Utf8ToAnsi('Desea modificar número plano de mensura? (SI/NO)'));
+                Writeln ('Desea modificar número plano de mensura? (SI/NO)');
                 Readln (OP_2);
                 IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
                     BEGIN
                     Writeln ('Ingrese el nuevo dato');
                     Readln (AUX);
                     dato.N_MENS:= AUX;
-                    Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+                    Writeln('La modificación ha sido exitosa');
                     END
                 ELSE
                     MODIF_DATO_T (ARCH_t, POS, dato);
                 END;
             3:BEGIN
-                Writeln (Utf8ToAnsi('Desea modificar fecha de inscripción? (SI/NO)'));
+                Writeln ('Desea modificar fecha de inscripción? (SI/NO)');
                 Readln (OP_2);
                 IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
                 BEGIN
                     Writeln ('Ingrese el nuevo dato');
                     Readln (AUX);
                     dato.f_inc:= AUX;
-                    Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+                    Writeln('La modificación ha sido exitosa');
                     END
                 ELSE
                     MODIF_DATO_T (ARCH_t, POS, dato);
                 END;
 
             4: BEGIN
-                Writeln (Utf8ToAnsi('Desea modificar dirección? (SI/NO)'));
+                Writeln ('Desea modificar dirección? (SI/NO)');
                 Readln (OP_2);
                 IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
                     BEGIN
                     Writeln ('Ingrese el nuevo dato');
                     Readln (AUX);
                     dato.domicilio:= AUX;
-                    Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+                    Writeln('La modificación ha sido exitosa');
                     END
                 ELSE
                     MODIF_DATO_T (ARCH_t, POS, dato);
@@ -117,7 +117,7 @@ implementation
                      end;
                     dato.zona:= AUX_2;
                     AVALUAR(DATO);
-                    Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+                    Writeln('La modificación ha sido exitosa');
                     END
                 ELSE
                     MODIF_DATO_T (ARCH_t, POS, dato);
@@ -138,7 +138,7 @@ implementation
                      end;
                     dato.tipo_e:= AUX_2;
                     AVALUAR(DATO);
-                    Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+                    Writeln('La modificación ha sido exitosa');
                     END
                 ELSE
                     MODIF_DATO_T (ARCH_T, POS, DATO);
@@ -156,7 +156,7 @@ implementation
                     Readln (AUX_3);
                     DATO.SUPERFICIE:= AUX_3;
                     AVALUAR(DATO);
-                    Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+                    Writeln('La modificación ha sido exitosa');
                     END
                 ELSE
                     MODIF_DATO_T(ARCH_T, POS, DATO);

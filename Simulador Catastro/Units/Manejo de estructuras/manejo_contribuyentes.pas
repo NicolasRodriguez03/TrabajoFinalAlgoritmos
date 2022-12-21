@@ -1,7 +1,7 @@
 unit manejo_contribuyentes;
 
 interface
-   USES manejo_archivo_cont, crt,
+   USES manejo_archivo_cont, unicodecrt,
     Arboles, DEFINICION_DATOS,
     MANEJO_TERRENOS;
 
@@ -43,11 +43,11 @@ implementation
     BEGIN
         with (X) do
         begin
-        Writeln (Utf8ToAnsi('Ingrese número de contribuyente'));
+        Writeln ('Ingrese número de contribuyente');
         Readln(N_CONT);
         if busqueda_archivo_n_cont(arch_c,n_cont)<>-1 then
             begin
-              writeln(Utf8ToAnsi('El contribuyente n° '), n_cont,Utf8ToAnsi(' ya existe, por favor ingrese un n° de contribuyente distinto del previamente ingresado'));
+              writeln('El contribuyente n° ', n_cont,' ya existe, por favor ingrese un n° de contribuyente distinto del previamente ingresado');
               readln (n_cont);
             end;
         if tipo then
@@ -65,13 +65,13 @@ implementation
             Readln (nombre);
             DNI:=clave1;
             end;
-        Writeln (Utf8ToAnsi('Ingrese dirección'));
+        Writeln ('Ingrese dirección');
         Readln (DIREC);
         Writeln ('Ingrese ciudad');
         Readln (ciudad);
         Writeln ('Ingrese fecha de nacimiento [DD/MM/AAAA]');
         Readln (F_NAC);
-        Writeln (Utf8ToAnsi('Ingrese teléfono'));
+        Writeln ('Ingrese teléfono');
         Readln (TEL);
         Writeln ('Ingrese mail');
         Readln (mail);
@@ -115,7 +115,7 @@ implementation
         AUX:string[50];
     begin
       LEER_DATO_C(ARCH_C,POS,REG);
-      Writeln (Utf8ToAnsi('¿Qué dato desea modificar? (Ingrese nro. de dato o ingrese  para volver al menu)'));
+      Writeln ('¿Qué dato desea modificar? (Ingrese nro. de dato o ingrese  para volver al menu)');
       Readln (OP);
       CASE OP OF
         1: BEGIN
@@ -126,7 +126,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.N_CONT:= AUX;
-            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+            Writeln('La modificación ha sido exitosa');
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS,REG);
@@ -139,7 +139,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.NOMBRE:= AUX;
-            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+            Writeln('La modificación ha sido exitosa');
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS, REG);
@@ -152,7 +152,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.APELLIDO:= AUX;
-            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+            Writeln('La modificación ha sido exitosa');
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS, REG);
@@ -165,7 +165,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.DIREC:= AUX;
-            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+            Writeln('La modificación ha sido exitosa');
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS, REG);
@@ -178,7 +178,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.CIUDAD:= AUX;
-            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+            Writeln('La modificación ha sido exitosa');
             END
            ELSE
             MODIF_DATO_C (ARCH_C,POS, REG);
@@ -191,7 +191,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.DNI:= AUX;
-            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+            Writeln('La modificación ha sido exitosa');
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS, REG);
@@ -204,7 +204,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.F_NAC:= AUX;
-            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+            Writeln('La modificación ha sido exitosa');
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS, REG);
@@ -218,7 +218,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.TEL:= AUX;
-            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+            Writeln('La modificación ha sido exitosa');
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS, REG);
@@ -231,7 +231,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.MAIL:= AUX;
-            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
+            Writeln('La modificación ha sido exitosa');
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS, REG);

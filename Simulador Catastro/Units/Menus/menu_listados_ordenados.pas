@@ -1,33 +1,42 @@
 unit menu_listados_ordenados;
 
 interface
-uses listados_ordenados, CRT, DEFINICION_DATOS, Arboles, manejo_archivo_CONT, manejo_archivo_TERR, MANEJO_CONTRIBUYENTES;
+uses listados_ordenados, unicodeCRT, DEFINICION_DATOS, Arboles, manejo_archivo_CONT, manejo_archivo_TERR, MANEJO_CONTRIBUYENTES,
+      graficos;
 procedure menu_listados;
 
 implementation
+    procedure Titulo_Menu;
+    begin
+      gotoxy(36,10);
+      textcolor(green);
+      WRITELN ('MENU DE LISTADOS ORDENADOS E IMPRESION');
+      textcolor(black);
+    end;
 
   procedure menu_listados;
   var resp,x: string; ARBOL_AYN,ARBOL_DNI:T_PUNT_A;
   begin
+    textbackground(white);
     Clrscr;
     crear_abrir_T(arch_t);
     crear_abrir_c(arch_c);
     CHEQUEO_ESTADO(ARCH_C, ARCH_T);
-    gotoxy(44,10);
-    textcolor(green);
-    WRITELN ('MENU DE LISTADOS ORDENADOS E IMPRESION');
-    textcolor(black);
-    gotoxy(39,11);
+    Box(30,9, 80,17);
+    titulo_menu;
+    gotoxy(33,11);
     Writeln ('1) Mostrar Ordenado por apellido y nombre');
-    gotoxy(39,12);
-    Writeln (Utf8ToAnsi('2) Mostrar Ordenado por fecha de inscripcion en un año determinado'));
-    gotoxy(39,13);
+    gotoxy(33,12);
+    Writeln ('2) Mostrar Ordenado por fecha de inscripcion');
+    Gotoxy(36,13);
+    write('en un año determinado');
+    gotoxy(33,14);
     Writeln ('3) Mostrar Ordenado por zona');
-    gotoxy(39,14);
-    Writeln (Utf8ToAnsi('4) Impresión de comprobante'));
-    gotoxy(42,15);
+    gotoxy(33,15);
+    Writeln ('4) Impresión de comprobante');
+    gotoxy(42,16);
     Writeln ('Respuesta: ');
-    gotoxy(54,15);
+    gotoxy(54,16);
     Readln (resp);
     case resp OF
       '1':BEGIN
@@ -41,7 +50,11 @@ implementation
           end;
       '2':BEGIN
           ClrScr;
-          Writeln(Utf8ToAnsi('Ingrese año'));
+          Box(30,9, 80,17);
+          titulo_menu;
+          Gotoxy(48,12);
+          Write('Ingrese año');
+          gotoxy(53,14);
           Readln (x);
           ClrScr;
           textcolor(green);

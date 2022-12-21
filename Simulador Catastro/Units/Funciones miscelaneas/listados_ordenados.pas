@@ -148,7 +148,7 @@ implementation
         gotoxy(35,1);
         write ('N. PLANO DE MENSURA');
         gotoxy(70,1);
-        write (Utf8ToAnsi('DIRECCIÓN'));
+        write ('DIRECCIÓN');
         gotoxy(100,1);
         write ('VALOR');
     END;

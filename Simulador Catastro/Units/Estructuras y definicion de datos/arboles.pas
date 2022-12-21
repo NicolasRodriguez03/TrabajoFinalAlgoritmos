@@ -18,8 +18,6 @@ Type
     FUNCTION ARBOL_LLENO (ARBOL:T_PUNT_A): BOOLEAN;
     PROCEDURE CREAR_ARBOL (VAR ARBOL: T_PUNT_A);
     PROCEDURE AGREGAR_ARBOL (VAR ARBOL: T_PUNT_A; X:T_DATO_ARBOL);
-    procedure suprime (var ARBOL:t_punt_a; x:t_dato_ARBOL);
-    function suprime_min (var ARBOL:t_punt_a): t_dato_arbol;
 
 implementation
 
@@ -40,6 +38,7 @@ implementation
 
     PROCEDURE AGREGAR_ARBOL (VAR ARBOL: T_PUNT_A; X:T_DATO_ARBOL);
     BEGIN;
+    
     IF ARBOL= NIL THEN
         BEGIN
             NEW (ARBOL);
@@ -50,43 +49,13 @@ implementation
     else
         begin
             IF ARBOL^.INFO.CLAVE > X.CLAVE THEN
-                AGREGAR_ARBOL (ARBOL^.H_I, X)
+                AGREGAR_ARBOL (ARBOL^.H_I, X)   
             else
                 AGREGAR_ARBOL (ARBOL^.H_D, X)
         end;
     END;
 
-function suprime_min (var ARBOL:t_punt_a): t_dato_arbol;
-    begin
-    if ARBOL^.H_I = nil then
-     begin
-     suprime_min:= ARBOL^.info;
-     ARBOL:=ARBOL^.h_d
-     end
-     else
-     suprime_min:= suprime_min (ARBOL^.h_i)
-    end;
 
-procedure suprime (var ARBOL:t_punt_a; x:t_dato_ARBOL);
- begin
- if ARBOL <> nil then
-    if X.CLAVE < ARBOL^.info.CLAVE then
-        suprime (ARBOL^.H_I,x)
-    else
-        if X.CLAVE < ARBOL^.info.CLAVE then
-        suprime (ARBOL^.H_D,x)
-    else
-        if (ARBOL^.H_i = nil) and (ARBOL^.H_D = nil) then
-        ARBOL:= nil
-        else
-            if (ARBOL^.H_i = nil) then
-             ARBOL:= ARBOL^.H_D
-            else
-                if (ARBOL^.H_d = nil) then
-                ARBOL:= ARBOL^.H_I
-                else
-                    ARBOL^.info:= SUPRIME_MIN(ARBOL^.H_D);
- end;
 
 
 end.

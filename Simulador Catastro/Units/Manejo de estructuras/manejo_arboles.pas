@@ -2,7 +2,7 @@ unit manejo_Arboles;
 
 interface
   USES
-     CRT, manejo_archivo_cont, definicion_datos, Arboles;
+    unicodeCRT, manejo_archivo_cont, definicion_datos, Arboles;
   
   PROCEDURE CONSULTA(VAR ARBOL:T_PUNT_A; var pos:LongInt; CLAVE:STRING);
   PROCEDURE MUESTRA_DATOS (VAR ARCH_C:ARCHIVO_C ; ARBOL: T_PUNT_A);
@@ -39,6 +39,5 @@ implementation
       AUX:= PREORDEN(ARBOL, CLAVE);
     IF AUX<>NIL THEN
       POS:= AUX^.INFO.POS_ARCH;
-    end;
-
+  end;
 end.
