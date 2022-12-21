@@ -2,7 +2,7 @@ unit manejo_terrenos;
 
 interface
 uses
-    definicion_datos, crt, lista, manejo_archivo_terr, MANEJO_ARCHIVO_CONT;
+    definicion_datos, crt, manejo_archivo_terr, MANEJO_ARCHIVO_CONT;
     PROCEDURE ALTA_T (VAR ARCH_T: ARCHIVO_T; x1:string);
     PROCEDURE MODIF_DATO_T(VAR ARCH_T: ARCHIVO_T; POS:longint; VAR DATO:T_DATO_T);
     procedure MODIFICACION_T(VAR ARCH_T:ARCHIVO_T; POS:longint);

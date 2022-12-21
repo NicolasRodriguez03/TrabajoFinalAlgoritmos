@@ -113,7 +113,6 @@ implementation
         OP:BYTE;
         OP_2:string[2];
         AUX:string[50];
-        AUX_2:BYTE;
     begin
       LEER_DATO_C(ARCH_C,POS,REG);
       Writeln (Utf8ToAnsi('¿Qué dato desea modificar? (Ingrese nro. de dato o ingrese  para volver al menu)'));
