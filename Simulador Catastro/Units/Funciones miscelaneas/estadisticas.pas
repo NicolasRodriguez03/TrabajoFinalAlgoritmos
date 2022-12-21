@@ -3,7 +3,7 @@ unit estadisticas;
 interface
 USES
 SYSUTILS,definicion_datos,
-manejo_contribuyentes, manejo_archivo_TERR, manejo_archivo_CONT;
+manejo_archivo_TERR, manejo_archivo_CONT;
 
 FUNCTION CONVERTIR_FECHA(X:STRING):INTEGER;
 FUNCTION cant_ins(VAR ARCH_t:ARCHIVO_t):INTEGER;
@@ -36,18 +36,19 @@ implementation
       Readln (F_FIN);
       F2:= CONVERTIR_FECHA(F_FIN) ;
       FOR I:=0 TO (FILESIZE(ARCH_T)-1) DO
-        begin
+      begin
         LEER_DATO_t(ARCH_t,I,X);
         F3:= CONVERTIR_FECHA(X.f_inc);
         IF (F3>=F1) AND (F3<=F2) THEN
           C:=C+1;
-        end;
+      end;
       cant_ins:=C;
     end;
 
     FUNCTION PORC_TIPO(Var ARCH_T:ARCHIVO_T; X:BYTE):REAL;  // Devuelve el porcentaje de terrenos que pertenecen al tipo dado
     VAR
-        TOTAL,C,I:INTEGER; REG:T_DATO_T;
+        TOTAL,C,I:INTEGER; 
+        REG:T_DATO_T;
     begin
       C:=0;
       TOTAL:=FILESIZE(ARCH_T);
@@ -65,7 +66,8 @@ implementation
 
     function Cant_baja(var ARCH_C:ARCHIVO_C):REAL;  // Devuelve el porcentaje de contribuyentes que están dados de baja
     VAR
-        TOTAL, C:INTEGER;     C1,I:LongInt;
+        TOTAL, C:INTEGER;
+        C1,I:LongInt;
         X:DATOS_CONT;
     begin
       C:=0 ;  I:=0;
@@ -75,7 +77,7 @@ implementation
         C1:=I;
         LEER_DATO_C(ARCH_C,C1,X);
         IF X.ESTADO=FALSE THEN
-        C:=C+1;
+          C:=C+1;
       end ;
       If TOTAL <> 0 THEN
         Cant_baja:=((C*100)/TOTAL)
@@ -85,7 +87,8 @@ implementation
 
 
    FUNCTION PROP_MP (VAR ARCH_C: ARCHIVO_C; VAR ARCH_T: ARCHIVO_T ):REAL; // Devuelve el porcentaje de contribuyentes con mas de una propiedad
-   VAR C,J,TOTAL,TOTAL_MP:INTEGER;     I,C1:LongInt;
+   VAR C,J,TOTAL,TOTAL_MP:longint; 
+        I,C1:LongInt;
         X:DATOS_CONT;
         X_1:T_DATO_T;
    BEGIN
@@ -101,20 +104,23 @@ implementation
       BEGIN
         J:=0;
         TOTAL:=TOTAL+1;
-        WHILE (C<2) AND (J<(FILESIZE(ARCH_T)-1)) DO
+        WHILE (C<2) AND (J<=(FILESIZE(ARCH_T)-1)) DO
         BEGIN
           LEER_DATO_T(ARCH_T,J,X_1);
           IF X_1.N_CONT= X.N_CONT THEN
             C:=C+1;
+          j:=j+1
         END;
       END;
-      IF C=2 THEN
+      IF C>=2 THEN
         TOTAL_MP:= TOTAL_MP+1;
     END;
     If TOTAL <> 0 THEN
       PROP_MP:= ((TOTAL_MP*100)/TOTAL)
     ELSE
       PROP_MP:= 0;
+    writeln('total ', total);
+    writeln('total mp ', total_mp);
   END;
 end.
 

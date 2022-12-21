@@ -64,16 +64,41 @@ Procedure crear_abrir_t(var ARCH_T:ARCHIVO_T);
         begin
             n_cont:=x1;
             N_MENS:=x2;
+            textcolor(magenta);
             Writeln (Utf8ToAnsi('Ingrese fecha de inscripción'));
+            textcolor(black);
             Readln (F_INC);
+            textcolor(magenta);
             Writeln ('Ingrese domicilio parcelario');
+            textcolor(black);
             Readln (DOMICILIO);
+            textcolor(magenta);
             Writeln ('Ingrese superficie en metros cuadrados');
+            textcolor(black);
             Readln (SUPERFICIE);
-            Writeln ('Ingrese zona');
+            textcolor(magenta);
+            Writeln ('Ingrese zona[1-5]');
+            textcolor(black);
             Readln (ZONA);
-            Writeln (Utf8ToAnsi('Ingrese tipo de edificación'));
+            while (zona<1) OR (zona>5) do
+            begin
+              textcolor(magenta);
+              WRITELN ('INGRESE UN VALOR VALIDO ENTRE 1-5');
+              textcolor(black);
+              READLN(ZONA);
+            end;
+            textcolor(magenta);
+            Writeln (Utf8ToAnsi('Ingrese tipo de edificación [1-5]'));
+            textcolor(black);
+            textcolor(magenta);
             Readln (TIPO_E);
+            WHILE (TIPO_E<1) OR (TIPO_E>5) DO 
+            begin
+              textcolor(magenta);
+              WRITELN ('INGRESE UN VALOR VALIDO ENTRE 1-5');
+              textcolor(black);
+              READLN(TIPO_E);
+            end;
         end;
     END;
 
@@ -82,7 +107,6 @@ Procedure crear_abrir_t(var ARCH_T:ARCHIVO_T);
     procedure busqueda_archivo_mens (VAR ARCH_T: archivo_t; x:string; var pos:LongInt);
     var i:word;T:T_DATO_T;
     begin
-        //crear_abrir_t(arch_t);
         pos:=-1;
         i:=0;
         while (pos=-1) and (i<FILESIZE(arch_t)) do

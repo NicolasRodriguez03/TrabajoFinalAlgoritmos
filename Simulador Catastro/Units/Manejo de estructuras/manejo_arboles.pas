@@ -13,8 +13,8 @@ implementation
   VAR
     X:WORD;
   BEGIN
-  X:= ARBOL^.INFO.POS_ARCH;
-  MOSTRAR_DATOS_C(arch_c,x);
+    X:= ARBOL^.INFO.POS_ARCH;
+    MOSTRAR_DATOS_C(arch_c,x);
   END;
 
   FUNCTION PREORDEN(ARBOL:T_PUNT_A; BUSCADO:STRING):T_PUNT_A; // Realiza una busqueda preorden, se usa en el arbol de apellido y nombre

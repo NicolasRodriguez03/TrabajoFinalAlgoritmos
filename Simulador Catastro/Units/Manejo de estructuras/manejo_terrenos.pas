@@ -15,7 +15,9 @@ implementation
     VAR X:T_DATO_T;
         n_cont:string;
     BEGIN
+         textcolor(magenta);
          Writeln ('Ingrese numero de contribuyente');
+         textcolor(black);
             Readln(N_CONT);
         if busqueda_archivo_n_cont(arch_c,n_cont) <> -1 then
             begin
@@ -36,9 +38,9 @@ implementation
 
     PROCEDURE MODIF_DATO_T(VAR ARCH_T: ARCHIVO_T; POS:longint; VAR DATO:T_DATO_T);   //esto esta bien, no tocar
         VAR
-            OP:BYTE; OP_2:STRING[2];
+            OP_2:STRING[2];
             AUX:string[50];
-            AUX_2: BYTE;
+            AUX_2, OP: integer;
             AUX_3: REAL;
         begin
         LEER_DATO_T(ARCH_T, POS, DATO);
@@ -51,46 +53,50 @@ implementation
                 Readln (OP_2);
                 IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
                     BEGIN
-                    Writeln ('Ingrese nuevo dato');
+                    Writeln ('Ingrese el nuevo dato');
                     Readln (AUX);
                     DATO.N_CONT:= AUX;
+                    Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
                     END
                 ELSE
                     MODIF_DATO_T(ARCH_T, POS, DATO);
                 END;
             2: BEGIN
-                Writeln ('Desea modificar numero plano de mensura? (SI/NO)');
+                Writeln (Utf8ToAnsi('Desea modificar número plano de mensura? (SI/NO)'));
                 Readln (OP_2);
                 IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
                     BEGIN
-                    Writeln ('Ingrese nuevo dato');
+                    Writeln ('Ingrese el nuevo dato');
                     Readln (AUX);
                     dato.N_MENS:= AUX;
+                    Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
                     END
                 ELSE
                     MODIF_DATO_T (ARCH_t, POS, dato);
                 END;
             3:BEGIN
-                Writeln ('Desea modificar fecha de inscripcion? (SI/NO)');
+                Writeln (Utf8ToAnsi('Desea modificar fecha de inscripción? (SI/NO)'));
                 Readln (OP_2);
                 IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
                 BEGIN
-                    Writeln ('Ingrese nuevo dato');
+                    Writeln ('Ingrese el nuevo dato');
                     Readln (AUX);
                     dato.f_inc:= AUX;
+                    Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
                     END
                 ELSE
                     MODIF_DATO_T (ARCH_t, POS, dato);
                 END;
 
             4: BEGIN
-                Writeln ('Desea modificar dirección? (SI/NO)');
+                Writeln (Utf8ToAnsi('Desea modificar dirección? (SI/NO)'));
                 Readln (OP_2);
                 IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
                     BEGIN
-                    Writeln ('Ingrese nuevo dato');
+                    Writeln ('Ingrese el nuevo dato');
                     Readln (AUX);
                     dato.domicilio:= AUX;
+                    Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
                     END
                 ELSE
                     MODIF_DATO_T (ARCH_t, POS, dato);
@@ -100,10 +106,18 @@ implementation
                 Readln (OP_2);
                 IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
                     BEGIN
-                    Writeln ('Ingrese nuevo dato');
+                    Writeln ('Ingrese el nuevo dato');
                     Readln (AUX_2);
+                    WHILE(AUX_2<1) OR (AUX_2>5) DO 
+                         begin
+                         textcolor(magenta);
+                         WRITELN ('INGRESE UN VALOR VALIDO ENTRE 1-5');
+                         textcolor(black);
+                         READLN(AUX_2);
+                     end;
                     dato.zona:= AUX_2;
                     AVALUAR(DATO);
+                    Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
                     END
                 ELSE
                     MODIF_DATO_T (ARCH_t, POS, dato);
@@ -113,16 +127,24 @@ implementation
                 Readln (OP_2);
                 IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
                     BEGIN
-                    Writeln ('Ingrese nuevo dato');
+                    Writeln ('Ingrese el nuevo dato');
                     Readln (AUX_2);
+                      WHILE(AUX_2<1) OR (AUX_2>5) DO 
+                     begin
+                          textcolor(magenta);
+                         WRITELN ('INGRESE UN VALOR VALIDO ENTRE 1-5');
+                         textcolor(black);
+                         READLN(AUX_2);
+                     end;
                     dato.tipo_e:= AUX_2;
                     AVALUAR(DATO);
+                    Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
                     END
                 ELSE
                     MODIF_DATO_T (ARCH_T, POS, DATO);
                 END;
             7: BEGIN
-                Writeln ('NO PUEDE MODIFICAR AVALUO');
+                Writeln ('El avaluo no puede ser modificado manualmente');
                 MODIF_DATO_T (ARCH_t, POS, DATO);
                END;
             8:BEGIN
@@ -130,10 +152,11 @@ implementation
                 Readln (OP_2);
                 IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
                     BEGIN
-                    Writeln ('Ingrese nuevo dato');
+                    Writeln ('Ingrese el nuevo dato');
                     Readln (AUX_3);
                     DATO.SUPERFICIE:= AUX_3;
                     AVALUAR(DATO);
+                    Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
                     END
                 ELSE
                     MODIF_DATO_T(ARCH_T, POS, DATO);
@@ -177,7 +200,7 @@ implementation
 
     procedure BAJA_TERRENO (VAR ARCH_T:ARCHIVO_T; POS:longint); //modificar eliminando
     Var REG:T_DATO_T;
-        OP, aux:string;        // VER SI PODEMOS CAMBIAR A STRING
+        OP, aux,x:string;
     BEGIN
         MOSTRAR_DATOS_T(ARCH_T, POS);
         Writeln ('Desea dar de baja a este terreno? (SI/NO)');
@@ -186,10 +209,11 @@ implementation
         IF (OP='Si') or (OP='SI') or (OP='si') then
         BEGIN
             LEER_DATO_T(ARCH_T, POS, REG);
+            x:=reg.N_MENS;
             FILLCHAR(REG,SIZEOF(REG),#0);
             GUARDAR_DATO_T(ARCH_T, POS, REG);
             Borrar_elemento(ARCH_T,POS);
-            WRITELN('La baja del terreno ', REG.N_MENS, ' ha sido exitosa, presione cualquier tecla para volver al menu principal');
+            WRITELN('La baja del terreno ', x, ' ha sido exitosa, presione cualquier tecla para volver al menu principal');
             readkey;
         END;
     end;

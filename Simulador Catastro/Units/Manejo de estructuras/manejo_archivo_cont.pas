@@ -8,7 +8,7 @@ interface
     PROCEDURE GUARDA_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:LongInt; REG:DATOS_CONT);
     PROCEDURE MOSTRAR_DATOS_C(VAR ARCH_C: ARCHIVO_C; POS:LongInt);
     FUNCTION OBTENER_N_CONT (VAR ARCH_C:ARCHIVO_C; POS: LongInt):STRING;
-    FUNCTION CANT_PROPIEDADES (VAR ARCH_T:ARCHIVO_T; VAR ARCH_C:ARCHIVO_C; x:DATOS_CONT):INTEGER;
+    FUNCTION CANT_PROPIEDADES (VAR ARCH_T:ARCHIVO_T; x:DATOS_CONT):INTEGER;
     PROCEDURE CHEQUEO_ESTADO(var ARCH_C: ARCHIVO_C;var ARCH_T:ARCHIVO_T);
 
 
@@ -29,7 +29,7 @@ implementation
     begin
         pos:=-1;
         i:=0;
-        while (pos=-1) and (i<FILESIZE(arch_t)) do
+        while (pos=-1) and (i<FILESIZE(arch_c)) do
         begin
             LEER_DATO_c(ARCH_c,i,t);
             if t.N_cont=x THEN
@@ -83,7 +83,7 @@ implementation
         OBTENER_N_CONT:= dato.n_cont;
     end;
 
-    FUNCTION CANT_PROPIEDADES (VAR ARCH_T:ARCHIVO_T; VAR ARCH_C:ARCHIVO_C; x:DATOS_CONT):INTEGER;
+    FUNCTION CANT_PROPIEDADES (VAR ARCH_T:ARCHIVO_T; x:DATOS_CONT):INTEGER;
     var J,C:longint; X_1:T_DATO_T;
     begin
         C:=0;
@@ -105,11 +105,11 @@ implementation
         begin
             I_AUX:=I;
             LEER_DATO_C(ARCH_C, I_AUX, DATO_C);
-            IF CANT_PROPIEDADES(ARCH_T, ARCH_C, DATO_C)>=1 THEN
+            IF CANT_PROPIEDADES(ARCH_T, DATO_C)>=1 THEN
                 DATO_C.ESTADO:=TRUE
             ELSE
                 DATO_C.ESTADO:=FALSE;
-        GUARDA_DATO_C(ARCH_C, I_AUX, DATO_C);
+            GUARDA_DATO_C(ARCH_C, I_AUX, DATO_C);
         end;
     end;
 end.

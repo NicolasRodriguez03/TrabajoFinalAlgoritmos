@@ -2,7 +2,7 @@ unit manejo_contribuyentes;
 
 interface
    USES manejo_archivo_cont, crt,
-    manejo_Arboles,  Arboles, DEFINICION_DATOS,
+    Arboles, DEFINICION_DATOS,
     MANEJO_TERRENOS;
 
  procedure leer_clave(var tipo:boolean; var clave1:string; var clave2:string);
@@ -38,6 +38,7 @@ implementation
         else 
           leer_clave(tipo, clave1, clave2)
     end;
+    
    PROCEDURE CARGAR_CONT(VAR X: DATOS_CONT; tipo:boolean; clave1:string; clave2:string);
     BEGIN
         with (X) do
@@ -80,7 +81,6 @@ implementation
 
    PROCEDURE ALTA_C(var ARCH_C: ARCHIVO_C; x:boolean; clave1:string; clave2:string);
     var
-        AUX_X,AUX_Y:T_DATO_ARBOL;
         R:DATOS_CONT;
         POS:LongInt;
     begin
@@ -127,6 +127,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.N_CONT:= AUX;
+            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS,REG);
@@ -139,6 +140,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.NOMBRE:= AUX;
+            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS, REG);
@@ -151,6 +153,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.APELLIDO:= AUX;
+            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS, REG);
@@ -163,6 +166,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.DIREC:= AUX;
+            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS, REG);
@@ -175,6 +179,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.CIUDAD:= AUX;
+            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
             END
            ELSE
             MODIF_DATO_C (ARCH_C,POS, REG);
@@ -187,6 +192,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.DNI:= AUX;
+            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS, REG);
@@ -199,6 +205,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.F_NAC:= AUX;
+            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS, REG);
@@ -212,6 +219,7 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.TEL:= AUX;
+            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS, REG);
@@ -224,24 +232,13 @@ implementation
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
             REG.MAIL:= AUX;
+            Writeln(Utf8ToAnsi('La modificación ha sido exitosa'));
             END
            ELSE
             MODIF_DATO_C (ARCH_C, POS, REG);
             END;
         10: BEGIN
-          Writeln ('Desea modificar estado de contribuyente? (SI/NO)');
-           Readln (OP_2);
-           IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
-            BEGIN
-            Writeln ('Ingrese 1:ACTIVO o 0:INACTIVO');
-            Readln (AUX_2);
-            IF AUX_2=0 THEN
-            REG.ESTADO:= FALSE
-            ELSE
-            IF AUX_2=1 THEN
-            REG.ESTADO:=TRUE;
-            END
-           ELSE
+            Writeln ('El estado no puede ser modificado manualmente');
             MODIF_DATO_C (ARCH_C, POS, REG);
       END;
         END;
