@@ -5,7 +5,7 @@ unit Graficos;
 
 interface
    uses
-    Classes, SysUtils, windows, crt;
+    Classes, SysUtils, windows, unicodecrt;
    Procedure Box(X1,Y1, X2,Y2:longint);
 
 

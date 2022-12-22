@@ -1,8 +1,8 @@
 unit menu_terrenos;
 
 interface
-USES manejo_terrenos, unicodeCRT,DEFINICION_DATOS, MANEJO_ARCHIVO_TERR, manejo_archivo_cont, graficos;
-procedure m_terrenos;
+USES manejo_terrenos, unicodeCRT,DEFINICION_DATOS, arboles, MANEJO_ARCHIVO_TERR, manejo_archivo_cont, graficos;
+procedure m_terrenos(ARBOL_AYN, ARBOL_DNI:T_PUNT_A);
 
 implementation
     procedure Titulo_Menu;
@@ -15,7 +15,7 @@ implementation
 
 
 
-    procedure m_terrenos;
+    procedure m_terrenos(ARBOL_AYN, ARBOL_DNI:T_PUNT_A);
     var
         x_1:string[15]; //numero de plano de mensura
         OP,OP_1:STRING; POS:longint;
@@ -79,7 +79,7 @@ implementation
                     ClrScr;
                     crear_abrir_c(arch_c);
                     Writeln ('Realizando ALTA');
-                    ALTA_T(ARCH_T, x_1);
+                    ALTA_T(ARBOL_DNI, ARCH_T, x_1);
                     CLOSE(ARCH_C);
                 end;
             end;
@@ -91,7 +91,7 @@ implementation
             Writeln('Por favor ingrese un número de mensura válido');
             Writeln('Presione cualquier tecla para volver al menú de terrenos');
             readkey;
-            m_terrenos;
+            m_terrenos(ARBOL_AYN, ARBOL_DNI);
         end;
 
     end;

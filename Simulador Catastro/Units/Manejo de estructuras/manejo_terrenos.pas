@@ -2,8 +2,8 @@ unit manejo_terrenos;
 
 interface
 uses
-    definicion_datos, unicodecrt, manejo_archivo_terr, MANEJO_ARCHIVO_CONT;
-    PROCEDURE ALTA_T (VAR ARCH_T: ARCHIVO_T; x1:string);
+    definicion_datos, unicodecrt,arboles, manejo_archivo_terr, MANEJO_ARCHIVO_CONT, validacion, manejo_arboles;
+    PROCEDURE ALTA_T (arbol:t_punt_a ;VAR ARCH_T: ARCHIVO_T; x2:string);
     PROCEDURE MODIF_DATO_T(VAR ARCH_T: ARCHIVO_T; POS:longint; VAR DATO:T_DATO_T);
     procedure MODIFICACION_T(VAR ARCH_T:ARCHIVO_T; POS:longint);
     PROCEDURE CONSULTA_T(VAR ARCH_T:ARCHIVO_T; POS:longint);
@@ -11,24 +11,37 @@ uses
     procedure BAJA_TERRENO (VAR ARCH_T:ARCHIVO_T; POS:longint);
 
 implementation
-    PROCEDURE ALTA_T (VAR ARCH_T: ARCHIVO_T; x1:string);
-    VAR X:T_DATO_T;
-        n_cont:string;
+    PROCEDURE ALTA_T (arbol:t_punt_a ;VAR ARCH_T: ARCHIVO_T; x2:string);
+    VAR X:T_DATO_T; 
+        DATO:DATOS_CONT;
+        pos:longint;
+        DNI,op:string;
     BEGIN
-         textcolor(magenta);
-         Writeln ('Ingrese numero de contribuyente');
-         textcolor(black);
-            Readln(N_CONT);
-        if busqueda_archivo_n_cont(arch_c,n_cont) <> -1 then
+        textcolor(magenta);
+        Writeln ('Ingrese numero de DNI');
+        textcolor(black);
+        Readln(DNI);
+         While not(no_contiene_letras(DNI)) do
             begin
-            CARGAR_T(X, n_cont, x1);
-            AVALUAR(X);
-            GUARDAR_DATO_T(ARCH_T,FILESIZE(arch_t),X);
+              Writeln('DNI invalido, por favor intente denuevo');
+              Readln(DNI);
+            end;
+        CONSULTA(ARBOL, pos, dni);
+        IF POS <> -1 THEN  
+            begin
+                CARGAR_T(X, OBTENER_N_CONT(arch_c,pos), x2);
+                writeln ('CON TOTAL SEGURIDAD DESEA COMPLETAR EL ALTA? SI/NO');
+                READLN (OP);
+                IF (OP='SI') OR (OP='Si') or (OP='si') then
+                BEGIN
+                    AVALUAR(X);
+                    GUARDAR_DATO_T(ARCH_T,FILESIZE(arch_t),X);
+                END;
             end
         else
             begin
             ClrScr;
-            WriteLn('No existe ese contribuyente, por favor realice alta a través del menú de contribuyentes');
+            WriteLn('No existe el contribuyente ingresado, por favor realice alta a través del menú de contribuyentes');
             Writeln('Presione cualquier tecla para continuar');
             readkey;
             end;
@@ -47,7 +60,6 @@ implementation
         Writeln ('Que dato desea modificar? (Ingrese nro. de dato o ingrese cualquier otra tecla para volver al menu)');
         Readln (OP);
         CASE (OP) OF
-
             1: BEGIN
                 Writeln ('Desea modificar nro. de contribuyente? (SI/NO)');
                 Readln (OP_2);
@@ -55,6 +67,11 @@ implementation
                     BEGIN
                     Writeln ('Ingrese el nuevo dato');
                     Readln (AUX);
+                    While not(no_contiene_letras(aux)) do
+                    begin
+                      Writeln('Ingrese un numero válido, por favor intente denuevo');
+                      Readln(AUX);
+                    end;
                     DATO.N_CONT:= AUX;
                     Writeln('La modificación ha sido exitosa');
                     END
@@ -80,7 +97,12 @@ implementation
                 IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
                 BEGIN
                     Writeln ('Ingrese el nuevo dato');
-                    Readln (AUX);
+                    Readln (AUX);     
+                    while not chequeo_fecha(aux) do
+                      begin
+                      WRITELN ('Fecha inválida, por favor intente nuevamente');
+                      readln (aux); 
+                        end;
                     dato.f_inc:= AUX;
                     Writeln('La modificación ha sido exitosa');
                     END

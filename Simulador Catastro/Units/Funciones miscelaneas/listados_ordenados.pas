@@ -2,7 +2,7 @@ unit listados_ordenados;
 
 interface
     USES definicion_datos,
-    lista,   CRT, MANEJO_CONTRIBUYENTES, 
+    lista,   CRT, MANEJO_CONTRIBUYENTES, validacion, 
     Arboles,  MANEJO_ARCHIVO_TERR, MANEJO_ARCHIVO_CONT,
     manejo_Arboles;
 

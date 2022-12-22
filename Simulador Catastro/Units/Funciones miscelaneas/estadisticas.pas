@@ -3,7 +3,7 @@ unit estadisticas;
 interface
 USES
 SYSUTILS,definicion_datos,
-manejo_archivo_TERR, manejo_archivo_CONT;
+manejo_archivo_TERR, manejo_archivo_CONT, validacion;
 
 FUNCTION CONVERTIR_FECHA(X:STRING):INTEGER;
 FUNCTION cant_ins(VAR ARCH_t:ARCHIVO_t):INTEGER;
@@ -31,9 +31,20 @@ implementation
       i:=0;    C:=0;
       Writeln('Ingrese fecha de inicio (DD/MM/AAAA)');
       Readln (F_IN);
+      while not chequeo_fecha(f_in) do
+      begin
+        WRITELN ('Fecha inválida, por favor intente nuevamente');
+        readln (f_in); 
+      end;
       F1:=CONVERTIR_FECHA(F_IN);
-      Writeln('Ingrese fecha de fin (DD/MM/AAAA)');
       Readln (F_FIN);
+      Writeln('Ingrese fecha de fin (DD/MM/AAAA)');
+      while not chequeo_fecha(f_fin) do
+      begin
+        WRITELN ('Fecha inválida, por favor intente nuevamente');
+        readln (f_in); 
+      end;
+     
       F2:= CONVERTIR_FECHA(F_FIN) ;
       FOR I:=0 TO (FILESIZE(ARCH_T)-1) DO
       begin

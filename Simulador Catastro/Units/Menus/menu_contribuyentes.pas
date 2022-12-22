@@ -2,12 +2,12 @@ unit menu_contribuyentes;
 
 interface
 USES CRT, manejo_arboles, MANEJO_CONTRIBUYENTES, Arboles, DEFINICION_DATOS, MANEJO_ARCHIVO_CONT, MANEJO_ARCHIVO_TERR;
-PROCEDURE M_CONTRIBUYENTES;
+PROCEDURE M_CONTRIBUYENTES(ARBOL_AYN, ARBOL_DNI:T_PUNT_A);
 
 implementation
 
-  PROCEDURE M_CONTRIBUYENTES;
-  VAR POS: LongInt; OP_1,OP,CLAVE1, CLAVE2:STRING; ARBOL_AYN,ARBOL_DNI:T_PUNT_A;
+  PROCEDURE M_CONTRIBUYENTES(ARBOL_AYN, ARBOL_DNI:T_PUNT_A);
+  VAR POS: LongInt; OP_1,OP,CLAVE1, CLAVE2:STRING;
       X:BOOLEAN;
   BEGIN
     textbackground(white);
@@ -15,7 +15,6 @@ implementation
     CLAVE2:='';
     crear_abrir_C(arch_c);
     crear_abrir_T(arch_t);
-    CARGAR_ARBOL (ARCH_C, ARBOL_AYN, ARBOL_DNI);
     CHEQUEO_ESTADO(ARCH_C, ARCH_T);
     leer_clave(x, clave1, clave2);
     if clave1<>('') then
@@ -64,7 +63,7 @@ implementation
         begin
           ClrScr;
           Writeln ('Realizando ALTA');
-          ALTA_C(ARCH_C, x, clave1, clave2);
+          ALTA_C(arbol_dni, ARCH_C, x, clave1, clave2);
         end;
       close(arch_c);
       close(arch_t);
@@ -77,7 +76,7 @@ implementation
       Writeln('Por favor ingrese una clave válida');
       Writeln('Presione cualquier tecla para volver al menú de contribuyentes');
       readkey;
-      M_CONTRIBUYENTES;
+    M_CONTRIBUYENTES(ARBOL_AYN, ARBOL_DNI);
     end;
   end;
 

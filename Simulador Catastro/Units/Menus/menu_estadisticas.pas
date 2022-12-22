@@ -20,7 +20,7 @@ implementation
 
 
   PROCEDURE M_ESTADISTICAS;
-  VAR resp:string;
+  VAR resp:char;
       c_1:longint;
   begin
     textbackground(white);

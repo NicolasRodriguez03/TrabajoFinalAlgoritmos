@@ -2,12 +2,12 @@ unit manejo_contribuyentes;
 
 interface
    USES manejo_archivo_cont, unicodecrt,
-    Arboles, DEFINICION_DATOS,
-    MANEJO_TERRENOS;
+    Arboles, DEFINICION_DATOS, validacion,
+    MANEJO_TERRENOS, sysutils, StrUtils;
 
  procedure leer_clave(var tipo:boolean; var clave1:string; var clave2:string);
   PROCEDURE CARGAR_CONT(VAR X: DATOS_CONT; tipo:boolean; clave1:string; clave2:string);
-  PROCEDURE ALTA_C(var ARCH_C: ARCHIVO_C; x:boolean; clave1:string; clave2:string);
+  PROCEDURE ALTA_C(Var arbol:t_punt_A; var ARCH_C: ARCHIVO_C; x:boolean; clave1:string; clave2:string);
   PROCEDURE CARGAR_ARBOL (VAR ARCH_C:ARCHIVO_C; VAR ARBOL_AYN:T_PUNT_A; VAR ARBOL_DNI:T_PUNT_A);
   PROCEDURE MODIF_DATO_C(VAR ARCH_C: ARCHIVO_C; POS:LongInt; VAR REG:DATOS_CONT);
   procedure MODIFICACION_C(VAR ARCH_C:ARCHIVO_C; POS:LongInt);
@@ -34,28 +34,44 @@ implementation
           tipo:=false;
           Writeln ('Ingrese DNI:');
           Readln (CLAVE1);
+           While not(no_contiene_letras(clave1)) do
+            begin
+              Writeln('DNI invalido, por favor intente denuevo');
+              Readln(clave1);
+            end;
           end
         else 
           leer_clave(tipo, clave1, clave2)
     end;
     
    PROCEDURE CARGAR_CONT(VAR X: DATOS_CONT; tipo:boolean; clave1:string; clave2:string);
+   VAR
+    AUX_DNI,AUX_TEL:word;
     BEGIN
         with (X) do
         begin
         Writeln ('Ingrese número de contribuyente');
         Readln(N_CONT);
-        if busqueda_archivo_n_cont(arch_c,n_cont)<>-1 then
+        While not(no_contiene_letras(DNI)) do
             begin
-              writeln('El contribuyente n° ', n_cont,' ya existe, por favor ingrese un n° de contribuyente distinto del previamente ingresado');
-              readln (n_cont);
-            end;
+              Writeln('N de contribuyente invalido, por favor intente denuevo');
+              Readln(N_CONT);
+//        if busqueda_archivo_n_cont(arch_c,n_cont)<>-1 then
+  //          begin
+    //          writeln('El contribuyente n° ', n_cont,' ya existe, por favor ingrese un n° de contribuyente distinto del previamente ingresado');
+      //        readln (n_cont);
+        //    end;
         if tipo then
             begin
             Apellido:=clave1;
             Nombre:=clave2;
             Writeln ('Ingrese DNI');
             Readln (DNI);
+            While not(no_contiene_letras(DNI)) do
+            begin
+              Writeln('DNI invalido, por favor intente denuevo');
+              Readln(DNI);
+            end;
             end
         else
             begin
@@ -71,22 +87,40 @@ implementation
         Readln (ciudad);
         Writeln ('Ingrese fecha de nacimiento [DD/MM/AAAA]');
         Readln (F_NAC);
+        while not chequeo_fecha(f_nac) do
+        begin
+          WRITELN ('Fecha inválida, por favor intente nuevamente');
+          readln (f_nac); 
+        end;
         Writeln ('Ingrese teléfono');
         Readln (TEL);
         Writeln ('Ingrese mail');
         Readln (mail);
+        WHILE not(ansicontainsstr(mail,'@')) DO
+        BEGIN
+          WRITELN ('Mail inválido, por favor intente nuevamente');
+          readln (mail);
+        END;
         ESTADO:=FALSE;
         end;
     END;
+    end;
 
-   PROCEDURE ALTA_C(var ARCH_C: ARCHIVO_C; x:boolean; clave1:string; clave2:string);
+   PROCEDURE ALTA_C(Var arbol:t_punt_A; var ARCH_C: ARCHIVO_C; x:boolean; clave1:string; clave2:string);
     var
-        R:DATOS_CONT;
+        R:DATOS_CONT; OP:STRING;
         POS:LongInt;
     begin
       CARGAR_CONT(R, x, clave1, clave2);
-      POS:=FILESIZE(ARCH_C);
-      GUARDA_DATO_C (ARCH_C,POS,R);
+      writeln ('CON TOTAL SEGURIDAD DESEA COMPLETAR EL ALTA? SI/NO');
+      READLN (OP);
+        IF (OP='SI') OR (OP='Si') or (OP='si') then
+        BEGIN
+        POS:=FILESIZE(ARCH_C);
+       GUARDA_DATO_C (ARCH_C,POS,R);
+       END
+       ELSE 
+       WRITELN ('NO SE HA DADO DE ALTA EL CONTRIBUYENTE');
     end;
 
     PROCEDURE CARGAR_ARBOL (VAR ARCH_C:ARCHIVO_C; VAR ARBOL_AYN:T_PUNT_A; VAR ARBOL_DNI:T_PUNT_A);
@@ -115,22 +149,13 @@ implementation
         AUX:string[50];
     begin
       LEER_DATO_C(ARCH_C,POS,REG);
-      Writeln ('¿Qué dato desea modificar? (Ingrese nro. de dato o ingrese  para volver al menu)');
+      Writeln ('¿Qué dato desea modificar? (Ingrese nro. de dato o ingrese cualquier otra tecla para volver al menu)');
       Readln (OP);
       CASE OP OF
         1: BEGIN
-           Writeln ('Desea modificar nro. de contribuyente? (SI/NO)');
-           Readln (OP_2);
-           IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
-            BEGIN
-            Writeln ('Ingrese nuevo dato');
-            Readln (AUX);
-            REG.N_CONT:= AUX;
-            Writeln('La modificación ha sido exitosa');
-            END
-           ELSE
-            MODIF_DATO_C (ARCH_C, POS,REG);
-            END;
+             WRITELN ('ESTE DATO ES IMPOSIBLE DE MODIFICAR');
+             MODIF_DATO_C (ARCH_C, POS, REG);
+             END;
         2:BEGIN
            Writeln ('Desea modificar nombre? (SI/NO)');
            Readln (OP_2);
@@ -184,17 +209,8 @@ implementation
             MODIF_DATO_C (ARCH_C,POS, REG);
            END;
         6: BEGIN
-          Writeln ('Desea modificar DNI? (SI/NO)');
-           Readln (OP_2);
-           IF (OP_2='SI') or (OP_2='si') or (OP_2='Si') then
-            BEGIN
-            Writeln ('Ingrese nuevo dato');
-            Readln (AUX);
-            REG.DNI:= AUX;
-            Writeln('La modificación ha sido exitosa');
-            END
-           ELSE
-            MODIF_DATO_C (ARCH_C, POS, REG);
+            WRITELN ('ESTE DATO ES IMPOSIBLE DE MODIFICAR');
+             MODIF_DATO_C (ARCH_C, POS, REG);
             END;
         7: BEGIN
           Writeln ('Desea modificar fecha de nacimiento? (SI/NO)');
@@ -230,6 +246,11 @@ implementation
             BEGIN
             Writeln ('Ingrese nuevo dato');
             Readln (AUX);
+              WHILE not(ansicontainsstr(AUX,'@')) DO
+             BEGIN
+              WRITELN ('Mail inválido, por favor intente nuevamente');
+              readln (aux);
+             END;
             REG.MAIL:= AUX;
             Writeln('La modificación ha sido exitosa');
             END

@@ -1,7 +1,7 @@
 unit manejo_archivo_terr;
 
 interface
-    USES unicodeCRT, DEFINICION_DATOS, sysutils;
+    USES unicodeCRT, DEFINICION_DATOS, sysutils, validacion;
     Procedure crear_abrir_T(var ARCH_T:ARCHIVO_T);
     PROCEDURE LEER_DATO_T(VAR ARCH_T:ARCHIVO_T; POS:LongInt; VAR DATO: T_DATO_T);
     PROCEDURE GUARDAR_DATO_T(VAR ARCH_T: ARCHIVO_T; POS:LongInt; REG:T_DATO_T);
@@ -62,12 +62,17 @@ Procedure crear_abrir_t(var ARCH_T:ARCHIVO_T);
     BEGIN
         with (X) do
         begin
-            n_cont:=x1;
+            n_cont:=X1;
             N_MENS:=x2;
             textcolor(magenta);
             Writeln ('Ingrese fecha de inscripcion ');
             textcolor(black);
             Readln (F_INC);
+            while not chequeo_fecha(f_inc) do
+            begin
+                WRITELN ('Fecha inválida, por favor intente nuevamente');
+                readln (f_inc); 
+            end;
             textcolor(magenta);
             Writeln ('Ingrese domicilio parcelario');
             textcolor(black);

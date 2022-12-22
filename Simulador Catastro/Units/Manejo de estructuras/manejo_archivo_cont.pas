@@ -3,7 +3,6 @@ unit manejo_archivo_cont;
 interface
     uses definicion_datos, sysutils, MANEJO_ARCHIVO_TERR;
     Procedure crear_abrir_C(var ARCH_C:ARCHIVO_C);
-    function busqueda_archivo_n_cont (VAR ARCH_c: archivo_c; x:string):longint;
     PROCEDURE LEER_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:LongInt; VAR REG:DATOS_CONT);
     PROCEDURE GUARDA_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:LongInt; REG:DATOS_CONT);
     PROCEDURE MOSTRAR_DATOS_C(VAR ARCH_C: ARCHIVO_C; POS:LongInt);
@@ -22,23 +21,6 @@ implementation
     if ioresult <> 0 then
         rewrite(ARCH_C);
     end;
-
-    function busqueda_archivo_n_cont (VAR ARCH_c: archivo_c; x:string):longint;
-    var i, pos:longint;
-        T:datos_cont;
-    begin
-        pos:=-1;
-        i:=0;
-        while (pos=-1) and (i<FILESIZE(arch_c)) do
-        begin
-            LEER_DATO_c(ARCH_c,i,t);
-            if t.N_cont=x THEN
-                pos:=i
-            else
-                i:=i+1;
-        end;
-        busqueda_archivo_n_cont:=pos;
-    END;
    
     PROCEDURE LEER_DATO_C(VAR ARCH_C:ARCHIVO_C; var POS:LongInt; VAR REG:DATOS_CONT);
     BEGIN

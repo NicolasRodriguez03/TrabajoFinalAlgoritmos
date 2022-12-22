@@ -2,8 +2,8 @@ unit menu_listados_ordenados;
 
 interface
 uses listados_ordenados, unicodeCRT, DEFINICION_DATOS, Arboles, manejo_archivo_CONT, manejo_archivo_TERR, MANEJO_CONTRIBUYENTES,
-      graficos;
-procedure menu_listados;
+      graficos, validacion;
+procedure menu_listados(ARBOL_AYN, ARBOL_DNI:T_PUNT_A);
 
 implementation
     procedure Titulo_Menu;
@@ -14,8 +14,8 @@ implementation
       textcolor(black);
     end;
 
-  procedure menu_listados;
-  var resp,x: string; ARBOL_AYN,ARBOL_DNI:T_PUNT_A;
+  procedure menu_listados(ARBOL_AYN, ARBOL_DNI:T_PUNT_A);
+  var resp,x: char;
   begin
     textbackground(white);
     Clrscr;
@@ -41,7 +41,6 @@ implementation
     case resp OF
       '1':BEGIN
           Clrscr;
-          CARGAR_ARBOL (ARCH_C, ARBOL_AYN, ARBOL_DNI);
           textcolor(green);
           FILA_P_AYN;
           textcolor(black);
@@ -56,6 +55,11 @@ implementation
           Write('Ingrese año');
           gotoxy(53,14);
           Readln (x);
+          while not(chequeo_fecha(x)) do
+          begin
+            WRITELN ('Fecha inválida, por favor intente nuevamente');
+            readln (x); 
+          end;
           ClrScr;
           textcolor(green);
           FILA_P_FECHA;
@@ -77,8 +81,6 @@ implementation
           end;
       '4':BEGIN
           ClrScr;
-          CARGAR_ARBOL (ARCH_C, ARBOL_AYN, ARBOL_DNI);
-          Clrscr;
           comprobante(arbol_ayn, ARBOL_DNI, arch_c, arch_t);
           readkey;
           end;
