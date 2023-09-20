@@ -12,7 +12,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
  **********************************************************************}
-unit UnicodeCRT;
+unit UnicodeCRT;    //Esta unit permite imprimir todos los caracteres unicode, es necesario para que graficos.pas pueda dibujar las cajas de texto
 {$LongStrings on}
 
 interface

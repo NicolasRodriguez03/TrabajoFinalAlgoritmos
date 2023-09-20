@@ -5,7 +5,7 @@ interface
 function no_contiene_letras(x:string):boolean;  
 
 implementation
-    function chequeo_fecha(x:string):boolean;
+    function chequeo_fecha(x:string):boolean;   // Verifica si el string ingresado esta en formato de fecha DD/MM/AAAA
    var
     aux1,aux2,aux3:string;
     out1,out2,out3,output1,output2,output3:word;
@@ -25,7 +25,7 @@ implementation
        end;
         end;     
 
-function no_contiene_letras(x:string):boolean;
+function no_contiene_letras(x:string):boolean;  // Verifica si el string ingresado contiene letras
    var
     aux:string; i,c:byte;
     outr, output:word ;
